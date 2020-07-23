@@ -1,14 +1,10 @@
 package de.cuuky.teamchunkclaimer.listener.flag;
 
-import java.util.Iterator;
-
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
@@ -58,15 +54,15 @@ public class ChunkBuildListener implements Listener {
 
 		event.setCancelled(true);
 	}
-
-	@EventHandler
-	public void onBlockExplode(BlockExplodeEvent event) {
-		Iterator<Block> blocks = event.blockList().iterator();
-		while (blocks.hasNext()) {
-			Block block = blocks.next();
-
-			if (cc.getEntityHandler().getChunk(block.getLocation().getChunk()) != null)
-				blocks.remove();
-		}
-	}
+//
+//	@EventHandler
+//	public void onBlockExplode(BlockExplodeEvent event) {
+//		Iterator<Block> blocks = event.blockList().iterator();
+//		while (blocks.hasNext()) {
+//			Block block = blocks.next();
+//
+//			if (cc.getEntityHandler().getChunk(block.getLocation().getChunk()) != null)
+//				blocks.remove();
+//		}
+//	}
 }

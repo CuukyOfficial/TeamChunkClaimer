@@ -62,8 +62,6 @@ public class ChunkCommand implements CommandExecutor {
 			return false;
 		}
 
-		// MAP UND LIST
-
 		if (args[0].equalsIgnoreCase("map")) {
 			new ChunkMapMenu(tcc, player.getPlayer());
 			return true;

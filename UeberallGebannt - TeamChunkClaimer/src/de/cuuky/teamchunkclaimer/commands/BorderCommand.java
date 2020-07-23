@@ -71,7 +71,7 @@ public class BorderCommand implements CommandExecutor {
 			@Override
 			public void run() {
 				for (ClaimChunk chunk : player.getTeam().getClaimedChunks()) {
-					int yStart = player.getPlayer().getLocation().getBlockY(), chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
+					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
 					faceLoop: for (DirectionFace face : DirectionFace.values()) {
 						if (mode == 1) {
 							Chunk neighbour = null;
@@ -98,7 +98,7 @@ public class BorderCommand implements CommandExecutor {
 						}
 
 						for (int x = 0; x <= 16; x++) {
-							for (int y = yStart; y <= yStart + 20; y++) {
+							for (int y = yStart; y <= yStart + 18; y++) {
 								final double[] locs = face.modifyValues(x, 0);
 
 								final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;

@@ -75,13 +75,16 @@ public class BorderCommand implements CommandExecutor {
 	public void sendBorders(ChunkPlayer player, int mode) {
 		this.borders.put(player, new BukkitRunnable() {
 
-			World world = player.getPlayer().getWorld();
-
 			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
+				World world = player.getPlayer().getWorld();
+				Location pLocation = player.getPlayer().getLocation();
 				for (ClaimChunk chunk : player.getTeam().getClaimedChunks()) {
 					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
+					if (Math.sqrt(Math.pow(chunkX - pLocation.getBlockX(), 2) + Math.pow(chunkZ - pLocation.getBlockZ(), 2)) >= 60)
+						continue;
+
 					faceLoop: for (DirectionFace face : DirectionFace.values()) {
 						if (mode == 1) {
 							Chunk neighbour = null;

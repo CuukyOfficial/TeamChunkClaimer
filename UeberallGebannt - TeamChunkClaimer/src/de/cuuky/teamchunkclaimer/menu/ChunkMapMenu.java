@@ -79,7 +79,7 @@ public class ChunkMapMenu extends SuperInventory {
 		this.claimer.getCfw().getInventoryManager().registerInventory(this);
 		open();
 	}
-	
+
 	@Override
 	public boolean onOpen() {
 		double height = (45 / 9) / 2, width = 4;
@@ -92,7 +92,7 @@ public class ChunkMapMenu extends SuperInventory {
 				double worldX = from.getX() + coords[0];
 				double worldZ = from.getZ() + coords[1];
 
-				ItemBuilder builder = new ItemBuilder().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem()).displayname("§fUnclaimed").lore(new String[] { "§7Location:", "§7X§8: §5" + (worldX * 16 + 8), "§7Z§8: §5" + (worldZ * 16 + 8) });
+				ItemBuilder builder = new ItemBuilder().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem()).displayname("§fUnclaimed").lore("§7Location:", "§7X§8: §5" + (worldX * 16 + 8), "§7Z§8: §5" + (worldZ * 16 + 8), "", (x == 0 && y == 0 ? "§7Da bist du!" : ""));
 				ClaimChunk chunk = this.claimer.getEntityHandler().getChunk(from.getWorld().getChunkAt((int) worldX, (int) worldZ));
 				if (chunk != null) {
 					if (cPlayer.getTeam() == null || !cPlayer.getTeam().equals(chunk.getTeam()))

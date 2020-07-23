@@ -66,7 +66,7 @@ public class GeneralOptionsMenu extends SuperInventory {
 							reopenSoon();
 							return true;
 						}
-						
+
 						return false;
 					}
 				}));
@@ -86,7 +86,7 @@ public class GeneralOptionsMenu extends SuperInventory {
 							reopenSoon();
 							return true;
 						}
-						
+
 						return false;
 					}
 				}));
@@ -106,7 +106,7 @@ public class GeneralOptionsMenu extends SuperInventory {
 							reopenSoon();
 							return true;
 						}
-						
+
 						return false;
 					}
 				}));
@@ -126,7 +126,7 @@ public class GeneralOptionsMenu extends SuperInventory {
 							reopenSoon();
 							return true;
 						}
-						
+
 						return false;
 					}
 				}));

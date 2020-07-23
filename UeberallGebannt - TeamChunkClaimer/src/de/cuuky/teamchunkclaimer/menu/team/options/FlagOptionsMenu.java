@@ -18,7 +18,7 @@ public class FlagOptionsMenu extends SuperInventory {
 		super("§7Flags", player.getPlayer(), 27, false);
 
 		this.setModifier = true;
-		
+
 		this.player = player;
 
 		player.getHandler().getTcc().getCfw().getInventoryManager().registerInventory(this);

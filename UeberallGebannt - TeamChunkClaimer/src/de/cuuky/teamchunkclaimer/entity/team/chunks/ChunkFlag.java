@@ -8,30 +8,30 @@ public enum ChunkFlag implements CFWSerializeable {
 
 	@CFWSerializeField(enumValue = "BUILD")
 	BUILD("Build", Materials.CHEST, "Ob Nichtteammitglieder auf deinem Grundstück bauen können"),
-	
+
 	@CFWSerializeField(enumValue = "PVP")
 	PVP("PvP", Materials.IRON_SWORD, "Ob auf dem Grundstück PvP aktiviert sein soll"),
 
 	@CFWSerializeField(enumValue = "USE")
 	USE("Use", Materials.STONE_SHOVEL, "Ob Nichtteammitglieder Kisten, Öfen etc. nutzen dürfen");
-	
+
 	private String name, description;
 	private Materials material;
-	
+
 	private ChunkFlag(String name, Materials material, String description) {
 		this.name = name;
 		this.material = material;
 		this.description = description;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public Materials getMaterial() {
 		return material;
 	}

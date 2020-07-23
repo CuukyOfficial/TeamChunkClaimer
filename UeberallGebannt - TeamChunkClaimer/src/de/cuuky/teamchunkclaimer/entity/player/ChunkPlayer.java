@@ -12,6 +12,9 @@ import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
 import de.cuuky.teamchunkclaimer.entity.player.invites.TeamInvite;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 public class ChunkPlayer implements CFWSerializeable {
 
@@ -98,8 +101,14 @@ public class ChunkPlayer implements CFWSerializeable {
 	public void inviteTo(ChunkTeam team, String by) {
 		this.invites.add(new TeamInvite(this, by, team));
 
-		if (isOnline())
+		if (isOnline()) {
 			this.player.sendMessage(this.handler.getClaimer().getPrefix() + "Du wurdest in das Team " + team.getDisplayname() + " §7eingeladen! §8(§7/team accept/deny <Team>§8)");
+			TextComponent accept = new TextComponent(this.handler.getClaimer().getPrefix() + "§aAnnehmen");
+			accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team accept " + team.getName()));
+			TextComponent deny = new TextComponent(this.handler.getClaimer().getPrefix() + "§cAblehnen");
+			deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team deny " + team.getName()));
+			this.player.sendMessage(accept + "\n" + deny);
+		}
 	}
 
 	public void removeInvite(TeamInvite invite) {

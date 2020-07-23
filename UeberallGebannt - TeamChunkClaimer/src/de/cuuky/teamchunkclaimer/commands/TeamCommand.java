@@ -134,6 +134,11 @@ public class TeamCommand implements CommandExecutor {
 				return false;
 			}
 
+			if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
+				sender.sendMessage(claimer.getPrefix() + "Lösche das Team erst, bevor du es als Besitzer verlässt!");
+				return false;
+			}
+
 			ChunkTeam team = player.getTeam();
 			team.removeMember(player);
 			sender.sendMessage(claimer.getPrefix() + "Du hast das Team " + team.getDisplayname() + " §7erfolgreich verlassen");

@@ -57,7 +57,7 @@ public class ChunkCommand implements CommandExecutor {
 		}
 
 		ClaimChunk chunk = claimer.getEntityHandler().getChunk(worldChunk);
-		if (claimer.getConfiguration().getBlacklistetWorlds().contains(player.getPlayer().getWorld().getName())) {
+		if (claimer.getConfiguration().getBlacklistedWorlds().contains(player.getPlayer().getWorld().getName())) {
 			sender.sendMessage(claimer.getPrefix() + "In dieser Welt kannst du keine Chunks claimen.");
 			return false;
 		}

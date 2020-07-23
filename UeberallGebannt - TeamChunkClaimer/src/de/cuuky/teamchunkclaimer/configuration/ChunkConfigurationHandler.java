@@ -12,7 +12,7 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 
 	private boolean buildInUnclaimed;
 	private int maxChunkGroups;
-	private ArrayList<String> blacklistetWorlds;
+	private ArrayList<String> blacklistedWorlds;
 
 	public ChunkConfigurationHandler() {
 		super("plugins/TeamChunkClaimer/config.yml");
@@ -27,7 +27,7 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 
 		this.buildInUnclaimed = getBool("chunks.buildInUnclaimed", true);
 		this.maxChunkGroups = getInt("chunks.maxChunkGroups", 2);
-		this.blacklistetWorlds = (ArrayList<String>) getValue("chunks.blacklistetWorlds", new ArrayList<String>());
+		this.blacklistedWorlds = (ArrayList<String>) getValue("chunks.blacklistedWorlds", new ArrayList<String>());
 	}
 
 	public String getPrefix() {
@@ -46,7 +46,7 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 		return maxChunkGroups;
 	}
 
-	public ArrayList<String> getBlacklistetWorlds() {
-		return blacklistetWorlds;
+	public ArrayList<String> getBlacklistedWorlds() {
+		return blacklistedWorlds;
 	}
 }

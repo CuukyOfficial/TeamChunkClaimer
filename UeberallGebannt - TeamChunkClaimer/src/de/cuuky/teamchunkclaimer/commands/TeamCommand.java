@@ -29,17 +29,17 @@ public class TeamCommand implements CommandExecutor {
 		}
 
 		if (args.length == 0) {
-			sender.sendMessage(claimer.getPrefix() + "/team info <Name>");
-			sender.sendMessage(claimer.getPrefix() + "/team create <Name>");
-			sender.sendMessage(claimer.getPrefix() + "/team accept/deny <Team>");
-			sender.sendMessage(claimer.getPrefix() + "------");
-			sender.sendMessage(claimer.getPrefix() + "/team leave");
-			sender.sendMessage(claimer.getPrefix() + "------");
-			sender.sendMessage(claimer.getPrefix() + "/team setcolor <Farbe>");
-			sender.sendMessage(claimer.getPrefix() + "/team invite <Spieler>");
-			sender.sendMessage(claimer.getPrefix() + "/team kick <Spieler>");
-			sender.sendMessage(claimer.getPrefix() + "/team promote <Spieler>");
-			sender.sendMessage(claimer.getPrefix() + "/team delete");
+			sender.sendMessage(claimer.getConfiguration().getHeader());
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team info <Name> §8- §7Zeig infos zu einem Team");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team create <Name> §8- §7Erstellt ein Team");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team accept/deny <Team> §8- §7Nimmt eine Teameinladung an oder lehnt sie ab");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team leave §8- §7Lässt dich das Team verlassen");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team setcolor <Farbe> §8- §7Setzt die Farbe deines Teams");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team invite <Spieler> §8- §7Lädt einen Spieler in dein Team ein");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team kick <Spieler> §8- §7Kickt einen Spieler aus deinem Team");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team promote <Spieler> §8- §7Macht einen Spieler zum Moderator deines Teams");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/team delete §8- §7Löscht dein Team");
+			sender.sendMessage(claimer.getConfiguration().getHeader());
 			return true;
 		}
 
@@ -59,10 +59,10 @@ public class TeamCommand implements CommandExecutor {
 				return false;
 			}
 
-			sender.sendMessage(claimer.getPrefix() + "§7-- " + team.getDisplayname() + " §7--");
-			sender.sendMessage(claimer.getPrefix() + "Team-Tag: " + team.getTag() == null ? "-" : team.getTag());
-			sender.sendMessage(claimer.getPrefix() + "Mitglieder: " + team.getMembers().size());
-			sender.sendMessage(claimer.getPrefix() + "Chunks: " + team.getClaimedChunks().size() + "/" + team.getAllowedChunkAmount());
+			sender.sendMessage(claimer.getPrefix() + "Team-Name: " + claimer.getColorCode() + team.getDisplayname());
+			sender.sendMessage(claimer.getPrefix() + "Team-Tag: " + claimer.getColorCode() + team.getTag() == null ? "-" : team.getTag());
+			sender.sendMessage(claimer.getPrefix() + "Mitglieder: " + claimer.getColorCode() + team.getMembers().size());
+			sender.sendMessage(claimer.getPrefix() + "Chunks: " + claimer.getColorCode() + team.getClaimedChunks().size() + "§8/" + claimer.getColorCode() + team.getAllowedChunkAmount());
 			return true;
 		} else if (args[0].equalsIgnoreCase("create")) {
 			if (player.getTeam() != null) {
@@ -177,7 +177,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (args.length < 2) {
-				sender.sendMessage(claimer.getPrefix() + "/team settag <tag>");
+				sender.sendMessage(claimer.getPrefix() + "/team settag <Tag>");
 				return false;
 			}
 
@@ -196,7 +196,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (args.length < 2) {
-				sender.sendMessage(claimer.getPrefix() + "/team setitle <title>");
+				sender.sendMessage(claimer.getPrefix() + "/team setitle <Title>");
 				return false;
 			}
 

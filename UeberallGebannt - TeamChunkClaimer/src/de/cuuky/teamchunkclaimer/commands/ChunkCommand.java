@@ -35,12 +35,14 @@ public class ChunkCommand implements CommandExecutor {
 		}
 
 		if (args.length == 0) {
-			sender.sendMessage(claimer.getPrefix() + "/chunk map §8- §7Öffnet eine Karte der Umgebung mit allen geclaimten Chunks");
-			sender.sendMessage(claimer.getPrefix() + "/chunk info [x] [z] §8- §7Zeigt Infos zu dem Chunk auf dem du stehst");
-			sender.sendMessage(claimer.getPrefix() + "/chunk claim [x] [z] §8- §7Claimt den Chunk für das Team");
-			sender.sendMessage(claimer.getPrefix() + "/chunk unclaim [x] [z] §8- §7Entclaimt den Chunk vom Team");
-			sender.sendMessage(claimer.getPrefix() + "/chunk list §8- §7Öffnet ein GUI mit allen Chunks deines Teams");
-			sender.sendMessage(claimer.getPrefix() + "/chunk flag <pvp/use/build> <true/false> §8- §7Öffnet ein GUI zum Einstellen der Flags");
+			sender.sendMessage(claimer.getConfiguration().getHeader());
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk map §8- §7Öffnet eine Karte der Umgebung mit allen geclaimten Chunks");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk info [x] [z] §8- §7Zeigt Infos zu dem Chunk auf dem du stehst");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk claim [x] [z] §8- §7Claimt den Chunk für das Team");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk unclaim [x] [z] §8- §7Entclaimt den Chunk vom Team");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk list §8- §7Öffnet ein GUI mit allen Chunks deines Teams");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk flag <pvp/use/build> <true/false> §8- §7Öffnet ein GUI zum Einstellen der Flags");
+			sender.sendMessage(claimer.getConfiguration().getHeader());
 			return true;
 		}
 
@@ -71,10 +73,10 @@ public class ChunkCommand implements CommandExecutor {
 				return false;
 			}
 
-			sender.sendMessage(claimer.getPrefix() + "§5Chunk §7" + chunk.getLocationX() + "§8:§7" + chunk.getLocationZ() + " §7in " + chunk.getWorld() + "§7:");
-			sender.sendMessage(claimer.getPrefix() + "§7Claimed at: " + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(chunk.getClaimedAt()));
-			sender.sendMessage(claimer.getPrefix() + "§7Chunk-Team: " + chunk.getTeam().getDisplayname());
-			sender.sendMessage(claimer.getPrefix() + "§7Claimed by: " + chunk.getClaimedBy());
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "Chunk §7" + chunk.getLocationX() + "§8:§7" + chunk.getLocationZ() + " §7in " + chunk.getWorld() + "§7:");
+			sender.sendMessage(claimer.getPrefix() + "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(chunk.getClaimedAt()));
+			sender.sendMessage(claimer.getPrefix() + "§7Besitzer (Team)§8: " + claimer.getColorCode() + chunk.getTeam().getDisplayname());
+			sender.sendMessage(claimer.getPrefix() + "§7Besitzer (Spieler)§8: " + claimer.getColorCode() + chunk.getClaimedBy());
 			return true;
 		}
 
@@ -105,7 +107,7 @@ public class ChunkCommand implements CommandExecutor {
 			}
 
 			if (!player.getTeam().canAddChunk(worldChunk)) {
-				sender.sendMessage(claimer.getPrefix() + "Du kannst nur an " + claimer.getConfiguration().getMaxChunkGroups() + " verschiedenen Stellen Chunks claimen.");
+				sender.sendMessage(claimer.getPrefix() + "Du kannst nur an " + claimer.getColorCode() + claimer.getConfiguration().getMaxChunkGroups() + " §7verschiedenen Stellen Chunks claimen.");
 				return false;
 			}
 

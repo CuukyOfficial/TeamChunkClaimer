@@ -93,6 +93,10 @@ public class ChunkClaimer {
 		return this.configuration.getPrefix();
 	}
 
+	public String getColorCode() {
+		return this.configuration.getColorCode();
+	}
+
 	public String getConsolePrefix() {
 		return this.plugin.getConsolePrefix();
 	}

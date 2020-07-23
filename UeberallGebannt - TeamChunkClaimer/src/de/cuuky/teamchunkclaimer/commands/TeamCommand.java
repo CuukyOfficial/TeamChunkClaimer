@@ -147,7 +147,13 @@ public class TeamCommand implements CommandExecutor {
 				sender.sendMessage(claimer.getPrefix() + "/team setcolor <Farbe>");
 				return false;
 			}
-
+			
+			if (args[1].length() < 2 || !args[1].startsWith("&")) {
+				sender.sendMessage(claimer.getPrefix() + "Bitte gib eine gültige Farbe ein.");
+				player.getNetworkManager().sendLinkedMessage(claimer.getPrefix() + "Klicke hier für eine Liste.", "https://static.planetminecraft.com/files/resource_media/screenshot/1444/minecraftcolourcodes8294254_lrg.jpg");
+				return false;
+			}
+			
 			player.getTeam().setColor(args[1]);
 			sender.sendMessage(claimer.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getColor() + player.getTeam().getColor().replace('§', '&') + " §7gesetzt!");
 			return true;

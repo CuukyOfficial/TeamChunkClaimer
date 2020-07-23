@@ -8,11 +8,11 @@ import de.cuuky.cfw.configuration.BasicConfigurationHandler;
 
 public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 
-	private String prefix, teamChatFormat;
+	private String prefix, teamChatFormat, colorCode, header;
 
 	private boolean buildInUnclaimed;
 	private int maxChunkGroups;
-	private ArrayList<String> blacklistetWorlds;
+	private ArrayList<String> blacklistedWorlds;
 
 	public ChunkConfigurationHandler() {
 		super("plugins/TeamChunkClaimer/config.yml");
@@ -22,12 +22,14 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 
 	@SuppressWarnings("unchecked")
 	public void reload() {
-		this.prefix = ChatColor.translateAlternateColorCodes('&', getString("prefix", "&8[&5Chunk&8] &7"));
-		this.teamChatFormat = ChatColor.translateAlternateColorCodes('&', getString("teamChatFormat", "&8[%team%&8] &5%player%&8: &f%message%"));
-
+		this.prefix = ChatColor.translateAlternateColorCodes('&', getString("prefix", "&2Teams &8» &7"));
+		this.teamChatFormat = ChatColor.translateAlternateColorCodes('&', getString("teamChatFormat", "&8[%team%&8] &a%player% &8» &7%message%"));
+		this.colorCode = ChatColor.translateAlternateColorCodes('&', getString("colorCode", "&a"));
+		this.header = ChatColor.translateAlternateColorCodes('&', getString("header", "&8&m------------&r &2Teams &8&m------------&r"));
+		
 		this.buildInUnclaimed = getBool("chunks.buildInUnclaimed", true);
 		this.maxChunkGroups = getInt("chunks.maxChunkGroups", 2);
-		this.blacklistetWorlds = (ArrayList<String>) getValue("chunks.blacklistetWorlds", new ArrayList<String>());
+		this.blacklistedWorlds = (ArrayList<String>) getValue("chunks.blacklistedWorlds", new ArrayList<String>());
 	}
 
 	public String getPrefix() {
@@ -38,6 +40,14 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 		return teamChatFormat;
 	}
 
+	public String getColorCode() {
+		return colorCode;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
 	public boolean canBuildInUnclaimed() {
 		return buildInUnclaimed;
 	}
@@ -46,7 +56,7 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 		return maxChunkGroups;
 	}
 
-	public ArrayList<String> getBlacklistetWorlds() {
-		return blacklistetWorlds;
+	public ArrayList<String> getBlacklistedWorlds() {
+		return blacklistedWorlds;
 	}
 }

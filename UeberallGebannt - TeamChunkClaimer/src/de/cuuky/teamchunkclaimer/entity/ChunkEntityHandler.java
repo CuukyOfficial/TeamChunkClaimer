@@ -65,7 +65,7 @@ public class ChunkEntityHandler {
 
 						player.getNetworkManager().sendTitle(newChunk.getTeam().getDisplayname(), newChunk.getTeam().getTitle() != null ? newChunk.getTeam().getTitle() : "");
 					} else if (oldChunk != null)
-						player.getNetworkManager().sendTitle("§aWildnis", "§7Hier kannst du claimen");
+						player.getNetworkManager().sendTitle("§aWildnis", "§7Hier kannst du Chunks claimen.");
 
 					lastChunks.put(player, newChunk);
 				}

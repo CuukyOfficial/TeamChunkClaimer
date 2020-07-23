@@ -22,7 +22,7 @@ public class ChunkMapMenu extends SuperInventory {
 	private DirectionFace face;
 
 	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
-		super("§aChunkMap §8" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier(), opener, 45, false);
+		super("§aChunks §8(" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier() + "§8)", opener, 45, false);
 		this.claimer = claimer;
 		this.face = DirectionFace.getFace(opener.getLocation().getYaw());
 		this.setModifier = false;

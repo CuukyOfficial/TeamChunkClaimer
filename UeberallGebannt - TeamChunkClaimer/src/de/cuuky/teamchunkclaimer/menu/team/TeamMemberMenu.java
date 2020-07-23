@@ -9,11 +9,13 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.menu.SuperInventory;
 import de.cuuky.cfw.menu.utils.PageAction;
+import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
 
 public class TeamMemberMenu extends SuperInventory {
 
+	private ChunkClaimer claimer;
 	private ChunkPlayer player;
 
 	public TeamMemberMenu(ChunkPlayer player) {
@@ -53,7 +55,7 @@ public class TeamMemberMenu extends SuperInventory {
 				break;
 
 			ChunkPlayer member = members.get(start);
-			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: §5" + member.getTeam().getMemberType(member).toString()).buildSkull());
+			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString()).buildSkull());
 			start++;
 		}
 

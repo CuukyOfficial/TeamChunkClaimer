@@ -5,11 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.cuuky.cfw.utils.JavaUtils;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.player.invites.TeamInvite;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
 import de.cuuky.teamchunkclaimer.entity.team.TeamMemberType;
+import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
 
 public class TeamCommand implements CommandExecutor {
 
@@ -73,6 +75,11 @@ public class TeamCommand implements CommandExecutor {
 				return false;
 			}
 
+			if (args[1].length() >= 8) {
+				sender.sendMessage(tcc.getPrefix() + "Teamlänge darf 8 nicht überschreiten!");
+				return false;
+			}
+
 			ChunkTeam team = tcc.getEntityHandler().registerTeam(args[1]);
 			team.addMember(player, TeamMemberType.OWNER);
 			sender.sendMessage(tcc.getPrefix() + "Team erfolgreich erstellt!");
@@ -113,7 +120,10 @@ public class TeamCommand implements CommandExecutor {
 			return false;
 		}
 
-		if (args[0].equalsIgnoreCase("leave")) {
+		if (args[0].equalsIgnoreCase("gui")) {
+			new TeamMainMenu(player);
+			return true;
+		} else if (args[0].equalsIgnoreCase("leave")) {
 			player.getTeam().removeMember(player);
 			sender.sendMessage(tcc.getPrefix() + "Du hast das Team " + player.getTeam().getDisplayname() + " §7erfolgreich verlassen");
 			return true;
@@ -134,6 +144,49 @@ public class TeamCommand implements CommandExecutor {
 
 			player.getTeam().setColor(args[1]);
 			sender.sendMessage(tcc.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getDisplayname() + " §7gesetzt!");
+			return true;
+		} else if (args[0].equalsIgnoreCase("rename")) {
+			if (args.length < 2) {
+				sender.sendMessage(tcc.getPrefix() + "/team rename <Name>");
+				return false;
+			}
+
+			if (args[1].length() > 8) {
+				sender.sendMessage(tcc.getPrefix() + "Teamlänge darf 8 nicht überschreiten!");
+				return false;
+			}
+
+			player.getTeam().setName(args[1]);
+			sender.sendMessage(tcc.getPrefix() + "Team erfolgreich umbenannt!");
+			return true;
+		} else if (args[0].equalsIgnoreCase("settag")) {
+			if (args.length < 2) {
+				sender.sendMessage(tcc.getPrefix() + "/team settag <tag>");
+				return false;
+			}
+
+			if (args[1].length() > 5) {
+				sender.sendMessage(tcc.getPrefix() + "Taglänge darf 5 nicht überschreiten!");
+				return false;
+			}
+
+			player.getTeam().setTag(args[1]);
+			sender.sendMessage(tcc.getPrefix() + "Tag erfolgreich geändert!");
+			return true;
+		} else if (args[0].equalsIgnoreCase("settitle")) {
+			if (args.length < 2) {
+				sender.sendMessage(tcc.getPrefix() + "/team setitle <title>");
+				return false;
+			}
+
+			String title = JavaUtils.getArgsToString(JavaUtils.removeString(args, 0), " ");
+			if (title.length() > 20) {
+				sender.sendMessage(tcc.getPrefix() + "Titlelänge darf 20 nicht überschreiten!");
+				return false;
+			}
+
+			player.getTeam().setTitle(title);
+			sender.sendMessage(tcc.getPrefix() + "Title erfolgreich geändert!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("invite")) {
 			if (args.length < 2) {

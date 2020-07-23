@@ -14,6 +14,11 @@ import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ChunkFlag;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
+import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
+import de.cuuky.teamchunkclaimer.menu.team.ChunkListMenu;
+import de.cuuky.teamchunkclaimer.menu.team.TeamMemberMenu;
+import de.cuuky.teamchunkclaimer.menu.team.options.FlagOptionsMenu;
+import de.cuuky.teamchunkclaimer.menu.team.options.GeneralOptionsMenu;
 import de.cuuky.teamchunkclaimer.utils.ChunkUtils;
 
 public class ChunkTeam implements CFWSerializeable {
@@ -117,6 +122,9 @@ public class ChunkTeam implements CFWSerializeable {
 
 		this.members.put(player, memberType);
 		player.setTeam(this);
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void removeMember(ChunkPlayer player) {
@@ -126,6 +134,8 @@ public class ChunkTeam implements CFWSerializeable {
 		this.sendMessage(this.handler.getTcc().getPrefix() + "§5" + player.getName() + " §7hat dein Team verlassen!");
 
 		checkChunks(player);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void setMemberType(ChunkPlayer player, TeamMemberType memberType) {
@@ -136,6 +146,9 @@ public class ChunkTeam implements CFWSerializeable {
 
 		this.members.put(player, memberType);
 		this.sendMessage(this.handler.getTcc().getPrefix() + "§5" + player.getName() + " §7ist nun ein §5" + memberType.toString() + "§7!");
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public TeamMemberType getMemberType(ChunkPlayer player) {
@@ -162,11 +175,17 @@ public class ChunkTeam implements CFWSerializeable {
 	public void addChunk(Chunk chunk, ChunkPlayer claimedBy) {
 		this.claimedChunks.add(new ClaimChunk(this, chunk, claimedBy));
 		this.sendMessage(this.handler.getTcc().getPrefix() + "Ein Chunk bei " + "X: " + chunk.getX() + ", Z: " + chunk.getZ() + " in " + chunk.getWorld().getName() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
+	
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void removeChunk(ClaimChunk chunk) {
 		this.claimedChunks.remove(chunk);
 		this.sendMessage(this.handler.getTcc().getPrefix() + "Dein Team-Chunk bei " + "X: " + chunk.getChunkX() + ", Z: " + chunk.getChunkZ() + " in " + chunk.getWorld() + " wurde entclaimt!");
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public boolean hasMaximumChunksReached() {
@@ -238,6 +257,8 @@ public class ChunkTeam implements CFWSerializeable {
 
 	public void setFlag(ChunkFlag flag, boolean enabled) {
 		this.flags.put(flag, enabled);
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(FlagOptionsMenu.class);
 	}
 
 	public boolean getFlag(ChunkFlag flag) {
@@ -276,21 +297,37 @@ public class ChunkTeam implements CFWSerializeable {
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
+	}
 
 	public String getTitle() {
-		return title;
+		return title == null ? null : ChatColor.translateAlternateColorCodes('&', title);
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public String getTag() {
-		return tag;
+		return tag == null ? null : ChatColor.translateAlternateColorCodes('&', tag);
 	}
 
 	public void setTag(String tag) {
 		this.tag = tag;
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public void setColor(String color) {
 		this.color = color;
+		
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public String getColor() {

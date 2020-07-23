@@ -14,7 +14,6 @@ import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
-import de.cuuky.teamchunkclaimer.Main;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;

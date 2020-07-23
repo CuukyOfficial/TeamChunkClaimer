@@ -1,6 +1,7 @@
 package de.cuuky.teamchunkclaimer;
 
 import de.cuuky.cfw.CuukyFrameWork;
+import de.cuuky.teamchunkclaimer.commands.BorderCommand;
 import de.cuuky.teamchunkclaimer.commands.ChunkCommand;
 import de.cuuky.teamchunkclaimer.commands.TeamCommand;
 import de.cuuky.teamchunkclaimer.configuration.ChunkConfigurationHandler;
@@ -52,6 +53,7 @@ public class ChunkClaimer {
 	private void registerCommands() {
 		plugin.getCommand("chunk").setExecutor(new ChunkCommand(this));
 		plugin.getCommand("team").setExecutor(new TeamCommand(this));
+		plugin.getCommand("border").setExecutor(new BorderCommand(this));
 	}
 
 	private void startSaveSchedule() {

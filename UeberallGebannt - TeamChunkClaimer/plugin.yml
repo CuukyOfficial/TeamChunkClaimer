@@ -12,3 +12,4 @@ commands:
   team:
     description: Main Command for the teams
     aliases: [teams, factions, village]
+  border:

@@ -55,14 +55,14 @@ public class TeamCommand implements CommandExecutor {
 
 			ChunkTeam team = claimer.getEntityHandler().getTeam(args[1]);
 			if (team == null) {
-				sender.sendMessage(claimer.getPrefix() + "Team wurde nicht gefunden!");
+				sender.sendMessage(claimer.getPrefix() + "Dieses Team wurde nicht gefunden!");
 				return false;
 			}
 
 			sender.sendMessage(claimer.getPrefix() + "§7-- " + team.getDisplayname() + " §7--");
 			sender.sendMessage(claimer.getPrefix() + "Team-Tag: " + team.getTag() == null ? "-" : team.getTag());
 			sender.sendMessage(claimer.getPrefix() + "Mitglieder: " + team.getMembers().size());
-			sender.sendMessage(claimer.getPrefix() + "Chunks: " + team.getClaimedChunks().size());
+			sender.sendMessage(claimer.getPrefix() + "Chunks: " + team.getClaimedChunks().size() + "/" + team.getAllowedChunkAmount());
 			return true;
 		} else if (args[0].equalsIgnoreCase("create")) {
 			if (player.getTeam() != null) {
@@ -82,7 +82,7 @@ public class TeamCommand implements CommandExecutor {
 
 			ChunkTeam team = claimer.getEntityHandler().registerTeam(args[1]);
 			team.addMember(player, TeamMemberType.OWNER);
-			sender.sendMessage(claimer.getPrefix() + "Team erfolgreich erstellt!");
+			sender.sendMessage(claimer.getPrefix() + "Dein Team wurde erfolgreich erstellt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("deny")) {
 			if (args.length < 2) {
@@ -97,7 +97,7 @@ public class TeamCommand implements CommandExecutor {
 
 			ChunkTeam team = claimer.getEntityHandler().getTeam(args[1]);
 			if (team == null) {
-				sender.sendMessage(claimer.getPrefix() + "Team wurde nicht gefunden!");
+				sender.sendMessage(claimer.getPrefix() + "Dieses Team wurde nicht gefunden!");
 				return false;
 			}
 
@@ -111,7 +111,7 @@ public class TeamCommand implements CommandExecutor {
 				team.addMember(player, TeamMemberType.MEMBER);
 
 			player.removeInvite(invite);
-			sender.sendMessage(claimer.getPrefix() + "Einladung erfolgreich " + (args[0].equalsIgnoreCase("accept") ? "angenommen" : "abgelehnt") + "!");
+			sender.sendMessage(claimer.getPrefix() + "Du hast die Einladung erfolgreich " + (args[0].equalsIgnoreCase("accept") ? "angenommen" : "abgelehnt") + "!");
 			return true;
 		}
 
@@ -149,7 +149,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			player.getTeam().setColor(args[1]);
-			sender.sendMessage(claimer.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getDisplayname() + " §7gesetzt!");
+			sender.sendMessage(claimer.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getColor() + player.getTeam().getColor().replace('§', '&') + " §7gesetzt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("rename")) {
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
@@ -168,7 +168,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			player.getTeam().setName(args[1]);
-			sender.sendMessage(claimer.getPrefix() + "Team erfolgreich umbenannt!");
+			sender.sendMessage(claimer.getPrefix() + "Das Team wurde erfolgreich umbenannt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("settag")) {
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
@@ -182,7 +182,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (args[1].length() > 5) {
-				sender.sendMessage(claimer.getPrefix() + "Taglänge darf 5 nicht überschreiten!");
+				sender.sendMessage(claimer.getPrefix() + "Die Taglänge darf 5 nicht überschreiten!");
 				return false;
 			}
 
@@ -202,7 +202,7 @@ public class TeamCommand implements CommandExecutor {
 
 			String title = JavaUtils.getArgsToString(JavaUtils.removeString(args, 0), " ");
 			if (title.length() > 20) {
-				sender.sendMessage(claimer.getPrefix() + "Titlelänge darf 20 nicht überschreiten!");
+				sender.sendMessage(claimer.getPrefix() + "Die Titlelänge darf 20 nicht überschreiten!");
 				return false;
 			}
 
@@ -222,7 +222,7 @@ public class TeamCommand implements CommandExecutor {
 
 			ChunkPlayer toInvite = this.claimer.getEntityHandler().getPlayer(args[1]);
 			if (toInvite == null) {
-				sender.sendMessage(claimer.getPrefix() + "Spieler nicht gefunden!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Spieler wurde nicht gefunden!");
 				return false;
 			}
 
@@ -237,7 +237,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			toInvite.inviteTo(player.getTeam(), player.getName());
-			sender.sendMessage(claimer.getPrefix() + "Spieler erfolgreich in dein Team eingeladen!");
+			sender.sendMessage(claimer.getPrefix() + "Der Spieler wurde erfolgreich in dein Team eingeladen!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("kick")) {
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
@@ -252,7 +252,7 @@ public class TeamCommand implements CommandExecutor {
 
 			ChunkPlayer toKick = this.claimer.getEntityHandler().getPlayer(args[1]);
 			if (toKick == null) {
-				sender.sendMessage(claimer.getPrefix() + "Spieler nicht gefunden!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Spieler wurde nicht gefunden!");
 				return false;
 			}
 
@@ -262,7 +262,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (player.getTeam().getMemberType(toKick) != TeamMemberType.MEMBER) {
-				sender.sendMessage(claimer.getPrefix() + "Paul hat mir zwar nicht gesagt, dass ich das einbauen soll, aber dass ein Mod einen anderen kickt oder sogar den Owner, finde ich schon ziemlich doof");
+				sender.sendMessage(claimer.getPrefix() + "Du kannst keine Moderatoren/Admins kicken.");
 				return false;
 			}
 
@@ -292,7 +292,7 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (player.getTeam().getMemberType(toPromote) != TeamMemberType.MEMBER) {
-				sender.sendMessage(claimer.getPrefix() + "Paul hat mir zwar nicht gesagt, dass ich das einbauen soll, aber dass ein Mod einen Owner promoten kann, finde ich schon ziemlich doof");
+				sender.sendMessage(claimer.getPrefix() + "Du kannst diesen Spieler nicht promoten.");
 				return false;
 			}
 

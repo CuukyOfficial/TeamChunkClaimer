@@ -9,6 +9,7 @@ import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.menu.SuperInventory;
 import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
+import de.cuuky.cfw.utils.DirectionFace;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
@@ -16,63 +17,14 @@ import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 
 public class ChunkMapMenu extends SuperInventory {
 
-	private static enum Face {
-
-		NORTH("NORTH", 135f, -135f),
-		EAST("EAST", -135f, -45f),
-		SOUTH("SOUTH", -45f, 45f),
-		WEST("WEST", 45f, 135f);
-
-		private String identifier;
-		private float start, end;
-
-		private Face(String identifier, float start, float end) {
-			this.identifier = identifier;
-			this.start = start;
-			this.end = end;
-		}
-
-		public String getIdentifier() {
-			return identifier;
-		}
-
-		public boolean isIn(float yaw) {
-			return start <= yaw && end > yaw;
-		}
-
-		public double[] modifyValues(double x, double z) {
-			switch (this) {
-			case EAST:
-				return new double[] { -z, x };
-			case WEST:
-				return new double[] { z, -x };
-			case SOUTH:
-				return new double[] { -x, -z };
-			default:
-				break;
-			}
-
-			return new double[] { x, z };
-		}
-
-		public static Face getFace(float yaw) {
-			yaw = yaw >= 180 ? -180 + (yaw - 180) : yaw;
-			for (Face face : values())
-				if (face.isIn(yaw))
-					return face;
-
-			return NORTH;
-		}
-	}
-
 	private ChunkClaimer claimer;
 	private ChunkPlayer player;
-	private Face face;
+	private DirectionFace face;
 
 	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
-		super("§aChunkMap §8" + Face.getFace(opener.getLocation().getYaw()).getIdentifier(), opener, 45, false);
+		super("§aChunkMap §8" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier(), opener, 45, false);
 		this.claimer = claimer;
-		this.face = Face.getFace(opener.getLocation().getYaw());
+		this.face = DirectionFace.getFace(opener.getLocation().getYaw());
 		this.setModifier = false;
 		this.fillInventory = false;
 

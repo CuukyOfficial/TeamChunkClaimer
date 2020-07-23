@@ -13,6 +13,8 @@ import de.cuuky.cfw.menu.SuperInventory;
 import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
+import de.cuuky.teamchunkclaimer.ChunkClaimer;
+import de.cuuky.teamchunkclaimer.Main;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
@@ -20,13 +22,13 @@ import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
 public class ChunkListMenu extends SuperInventory {
 
 	private ChunkPlayer player;
+	private ChunkClaimer claimer;
 
 	public ChunkListMenu(ChunkPlayer player) {
 		super("§7Chunks " + player.getTeam().getDisplayname(), player.getPlayer(), 54, false);
 
 		this.setModifier = true;
 		this.fillInventory = false;
-
 		this.player = player;
 
 		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
@@ -59,8 +61,8 @@ public class ChunkListMenu extends SuperInventory {
 				break;
 
 			ClaimChunk chunk = chunks.get(start);
-			linkItemTo(i, new ItemBuilder().displayname("§7X§8:§5" + chunk.getLocationX() + "§8, §7Z§8:§5" + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: §a" + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Claimed at§8: §a" + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "Klicken zum unclaimen").build(),  new ItemClickHandler() {
-				
+			linkItemTo(i, new ItemBuilder().displayname("§7X§8: " + claimer.getColorCode() + chunk.getLocationX() + "§8, §7Z§8: " + claimer.getColorCode() + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "Klicke zum Entclaimen.").build(), new ItemClickHandler() {
+
 				@Override
 				public void onItemClick(InventoryClickEvent event) {
 					player.getTeam().removeChunk(chunk);

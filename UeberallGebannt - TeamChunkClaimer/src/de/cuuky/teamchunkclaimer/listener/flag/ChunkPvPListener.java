@@ -33,7 +33,7 @@ public class ChunkPvPListener implements Listener {
 		ClaimChunk playerChunk = cc.getEntityHandler().getChunk(player.getLocation().getChunk());
 		if (damagerChunk != null && !damagerChunk.getTeam().getFlag(ChunkFlag.PVP) || playerChunk != null && !playerChunk.getTeam().getFlag(ChunkFlag.PVP))
 			return;
-
+		pDamager.sendMessage(cc.getPrefix() + "Du kannst diesen Spieler hier nicht angreifen.");
 		event.setCancelled(true);
 	}
 }

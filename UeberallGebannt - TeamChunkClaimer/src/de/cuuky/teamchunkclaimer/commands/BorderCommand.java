@@ -26,11 +26,19 @@ public class BorderCommand implements CommandExecutor {
 	private ChunkClaimer instance;
 
 	private Map<ChunkPlayer, BukkitTask> borders;
+	private Effect borderEffect;
 
 	public BorderCommand(ChunkClaimer instance) {
 		this.instance = instance;
 
 		this.borders = new HashMap<ChunkPlayer, BukkitTask>();
+
+		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12))
+			// 1.13+
+			borderEffect = Effect.valueOf("VILLAGER_PLANT_GROW");
+		else
+			// < 1.12
+			borderEffect = Effect.valueOf("VILLAGER_HAPPY");
 	}
 
 	@Override
@@ -105,16 +113,8 @@ public class BorderCommand implements CommandExecutor {
 
 								final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;
 								final int locX = (int) locs[0] + chunkX + add, locY = y, locZ = (int) locs[1] + chunkZ + add;
-								
-								Effect effect = null;
-								if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12))
-									// 1.13+
-									effect = Effect.valueOf("VILLAGER_PLANT_GROW");
-								else
-									// < 1.12
-									effect = Effect.valueOf("VILLAGER_HAPPY");
-								
-								player.getPlayer().playEffect(new Location(world, locX, locY, locZ), effect, 1);
+
+								player.getPlayer().playEffect(new Location(world, locX, locY, locZ), borderEffect, 1);
 							}
 						}
 					}

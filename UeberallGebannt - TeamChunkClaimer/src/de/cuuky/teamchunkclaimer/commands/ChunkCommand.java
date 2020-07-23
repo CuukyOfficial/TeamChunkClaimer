@@ -35,12 +35,12 @@ public class ChunkCommand implements CommandExecutor {
 		}
 
 		if (args.length == 0) {
-			sender.sendMessage(claimer.getPrefix() + "/chunk map - Öffnet ein maximal großes GUI in dem man eine 'Karte' der Umgebung");
-			sender.sendMessage(claimer.getPrefix() + "/chunk info [x] [z] - Zeigt Infos zu dem Chunk auf dem du stehst");
-			sender.sendMessage(claimer.getPrefix() + "/chunk claim [x] [z]- Claimt den Chunk für das Team");
-			sender.sendMessage(claimer.getPrefix() + "/chunk unclaim [x] [z] - Unclaimt den Chunk vom Team");
-			sender.sendMessage(claimer.getPrefix() + "/chunk list - Öffnet ein GUI mit allen Chunks deines Teams");
-			sender.sendMessage(claimer.getPrefix() + "/chunk flag <pvp/use/build> <true/false> - Stellt die Flags für alle Chunks des Teams ein, wenn nur /chunk flag dann GUI");
+			sender.sendMessage(claimer.getPrefix() + "/chunk map §8- §7Öffnet eine Karte der Umgebung mit allen geclaimten Chunks");
+			sender.sendMessage(claimer.getPrefix() + "/chunk info [x] [z] §8- §7Zeigt Infos zu dem Chunk auf dem du stehst");
+			sender.sendMessage(claimer.getPrefix() + "/chunk claim [x] [z] §8- §7Claimt den Chunk für das Team");
+			sender.sendMessage(claimer.getPrefix() + "/chunk unclaim [x] [z] §8- §7Entclaimt den Chunk vom Team");
+			sender.sendMessage(claimer.getPrefix() + "/chunk list §8- §7Öffnet ein GUI mit allen Chunks deines Teams");
+			sender.sendMessage(claimer.getPrefix() + "/chunk flag <pvp/use/build> <true/false> §8- §7Öffnet ein GUI zum Einstellen der Flags");
 			return true;
 		}
 
@@ -58,7 +58,7 @@ public class ChunkCommand implements CommandExecutor {
 
 		ClaimChunk chunk = claimer.getEntityHandler().getChunk(worldChunk);
 		if (claimer.getConfiguration().getBlacklistetWorlds().contains(player.getPlayer().getWorld().getName())) {
-			sender.sendMessage(claimer.getPrefix() + "In dieser Welt kannst du das Chunksystem nicht nutzen!");
+			sender.sendMessage(claimer.getPrefix() + "In dieser Welt kannst du keine Chunks claimen.");
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class ChunkCommand implements CommandExecutor {
 			return true;
 		} else if (args[0].equalsIgnoreCase("info")) {
 			if (chunk == null) {
-				sender.sendMessage(claimer.getPrefix() + "Chunk ungeclaimt!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist nicht geclaimt.");
 				return false;
 			}
 
@@ -95,17 +95,17 @@ public class ChunkCommand implements CommandExecutor {
 			}
 
 			if (chunk != null) {
-				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist bereits geclaimt (/chunk info)");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist bereits geclaimt (/chunk info).");
 				return false;
 			}
 
 			if (player.getTeam().hasMaximumChunksReached()) {
-				sender.sendMessage(claimer.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunks erreicht!");
+				sender.sendMessage(claimer.getPrefix() + "Die maximale Anzahl von Chunks wurde erreicht.");
 				return false;
 			}
 
 			if (!player.getTeam().canAddChunk(worldChunk)) {
-				sender.sendMessage(claimer.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunkregionen erreicht!");
+				sender.sendMessage(claimer.getPrefix() + "Du kannst nur an " + claimer.getConfiguration().getMaxChunkGroups() + " verschiedenen Stellen Chunks claimen.");
 				return false;
 			}
 
@@ -117,7 +117,7 @@ public class ChunkCommand implements CommandExecutor {
 			} catch (Exception | Error e) {}
 
 			player.getTeam().addChunk(worldChunk, player);
-			sender.sendMessage(claimer.getPrefix() + "Chunk erfolgreich geclaimt!");
+			sender.sendMessage(claimer.getPrefix() + "Du hast den Chunk erfolgreich geclaimt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("unclaim")) {
 			if (player.getTeam() == null) {
@@ -126,7 +126,7 @@ public class ChunkCommand implements CommandExecutor {
 			}
 
 			if (chunk == null) {
-				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist noch nicht geclaimt!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist noch nicht geclaimt.");
 				return false;
 			}
 
@@ -136,7 +136,7 @@ public class ChunkCommand implements CommandExecutor {
 			}
 
 			player.getTeam().removeChunk(chunk);
-			sender.sendMessage(claimer.getPrefix() + "Chunk erfolgreich unclaimed!");
+			sender.sendMessage(claimer.getPrefix() + "Du hast den Chunk erfolgreich entclaimt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("list")) {
 			new ChunkListMenu(player);
@@ -165,7 +165,7 @@ public class ChunkCommand implements CommandExecutor {
 			try {
 				flag = ChunkFlag.valueOf(args[1].toUpperCase());
 			} catch (IllegalArgumentException e) {
-				sender.sendMessage(claimer.getPrefix() + "Flag nicht gefunden! /team flag");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Flag wurde nicht gefunden (/team flag).");
 				return false;
 			}
 
@@ -183,11 +183,11 @@ public class ChunkCommand implements CommandExecutor {
 			}
 
 			player.getTeam().setFlag(flag, enabled);
-			sender.sendMessage(claimer.getPrefix() + "Flag erfolgreich gesetzt!");
+			sender.sendMessage(claimer.getPrefix() + "Der Flag wurde erfolgreich gesetzt!");
 			return true;
 		}
 
-		sender.sendMessage(claimer.getPrefix() + "Command nicht gefunden! /chunk");
+		sender.sendMessage(claimer.getPrefix() + "Dieser Befehl existiert nicht (/chunk).");
 		return false;
 	}
 }

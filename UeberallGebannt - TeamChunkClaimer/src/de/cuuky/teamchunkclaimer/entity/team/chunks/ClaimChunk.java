@@ -72,7 +72,7 @@ public class ClaimChunk implements CFWSerializeable {
 
 	@Override
 	public void onDeserializeEnd() {
-		World world = this.team.getHandler().getTcc().getPlugin().getServer().getWorld(this.world);
+		World world = this.team.getHandler().getClaimer().getPlugin().getServer().getWorld(this.world);
 		if (world == null)
 			return;
 

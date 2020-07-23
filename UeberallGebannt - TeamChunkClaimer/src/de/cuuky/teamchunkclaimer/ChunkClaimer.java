@@ -77,7 +77,7 @@ public class ChunkClaimer {
 		return plugin;
 	}
 
-	public CuukyFrameWork getCfw() {
+	public CuukyFrameWork getCuukyFrameWork() {
 		return cfw;
 	}
 

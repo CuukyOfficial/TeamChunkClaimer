@@ -21,20 +21,20 @@ public class ChunkEntityHandler {
 
 	private final String BASE_DIR = "plugins/TeamChunkClaimer/stats/";
 
-	private ChunkClaimer tcc;
+	private ChunkClaimer claimer;
 	private CFWSerializeManager serializeManager;
 
 	private List<ChunkPlayer> players;
 	private List<ChunkTeam> teams;
 
-	public ChunkEntityHandler(ChunkClaimer tcc) {
-		this.tcc = tcc;
-		this.serializeManager = tcc.getCfw().getSerializeManager();
+	public ChunkEntityHandler(ChunkClaimer claimer) {
+		this.claimer = claimer;
+		this.serializeManager = claimer.getCuukyFrameWork().getSerializeManager();
 
 		this.players = this.serializeManager.loadSerializeables(ChunkPlayer.class, new File(BASE_DIR + "players.yml"), this);
 		this.teams = this.serializeManager.loadSerializeables(ChunkTeam.class, new File(BASE_DIR + "teams.yml"), this);
 
-		for (Player player : tcc.getPlugin().getServer().getOnlinePlayers()) {
+		for (Player player : claimer.getPlugin().getServer().getOnlinePlayers()) {
 			ChunkPlayer tcp = getPlayer(player.getUniqueId().toString());
 			if (tcp == null)
 				tcp = registerPlayer(player.getUniqueId());
@@ -56,7 +56,7 @@ public class ChunkEntityHandler {
 					if (!player.isOnline())
 						continue;
 
-					ClaimChunk newChunk = tcc.getEntityHandler().getChunk(player.getPlayer().getLocation().getChunk());
+					ClaimChunk newChunk = claimer.getEntityHandler().getChunk(player.getPlayer().getLocation().getChunk());
 					ClaimChunk oldChunk = lastChunks.get(player);
 
 					if (newChunk != null) {
@@ -70,7 +70,7 @@ public class ChunkEntityHandler {
 					lastChunks.put(player, newChunk);
 				}
 			}
-		}.runTaskTimerAsynchronously(tcc.getPlugin(), 20, 5);
+		}.runTaskTimerAsynchronously(claimer.getPlugin(), 20, 5);
 	}
 
 	public void saveEntities() {
@@ -92,7 +92,7 @@ public class ChunkEntityHandler {
 	}
 
 	public ClaimChunk getChunk(Chunk chunk) {
-		for (ChunkTeam team : tcc.getEntityHandler().getTeams())
+		for (ChunkTeam team : claimer.getEntityHandler().getTeams())
 			for (ClaimChunk tChunk : team.getClaimedChunks())
 				if (tChunk.getChunk().equals(chunk))
 					return tChunk;
@@ -155,7 +155,7 @@ public class ChunkEntityHandler {
 		return teams;
 	}
 
-	public ChunkClaimer getTcc() {
-		return tcc;
+	public ChunkClaimer getClaimer() {
+		return claimer;
 	}
 }

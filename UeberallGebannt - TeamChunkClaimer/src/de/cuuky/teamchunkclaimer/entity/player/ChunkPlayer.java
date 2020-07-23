@@ -99,7 +99,7 @@ public class ChunkPlayer implements CFWSerializeable {
 		this.invites.add(new TeamInvite(this, by, team));
 
 		if (isOnline())
-			this.player.sendMessage(this.handler.getTcc().getPrefix() + "Du wurdest in das Team " + team.getDisplayname() + " §7eingeladen! §8(§7/team accept/deny <Team>§8)");
+			this.player.sendMessage(this.handler.getClaimer().getPrefix() + "Du wurdest in das Team " + team.getDisplayname() + " §7eingeladen! §8(§7/team accept/deny <Team>§8)");
 	}
 
 	public void removeInvite(TeamInvite invite) {

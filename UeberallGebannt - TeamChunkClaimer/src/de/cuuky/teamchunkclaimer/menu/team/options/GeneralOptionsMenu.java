@@ -28,7 +28,7 @@ public class GeneralOptionsMenu extends SuperInventory {
 
 		this.player = player;
 
-		player.getHandler().getTcc().getCfw().getInventoryManager().registerInventory(this);
+		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
 		open();
 	}
 
@@ -51,18 +51,18 @@ public class GeneralOptionsMenu extends SuperInventory {
 	public boolean onOpen() {
 		ItemBuilder builder = new ItemBuilder().itemstack(Materials.BOOK.parseItem());
 		ChunkTeam team = player.getTeam();
-		HookManager hook = team.getHandler().getTcc().getCfw().getHookManager();
+		HookManager hook = team.getHandler().getClaimer().getCuukyFrameWork().getHookManager();
 
 		linkItemTo(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(), new Runnable() {
 
 			@Override
 			public void run() {
 				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getTcc().getPrefix() + "§7Neuen Teamnamen eingeben:", new ChatHookHandler() {
+				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Teamnamen eingeben:", new ChatHookHandler() {
 
 					@Override
 					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getTcc().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team rename " + event.getMessage())) {
+						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team rename " + event.getMessage())) {
 							reopenSoon();
 							return true;
 						}
@@ -78,11 +78,11 @@ public class GeneralOptionsMenu extends SuperInventory {
 			@Override
 			public void run() {
 				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getTcc().getPrefix() + "§7Neuen Tag eingeben:", new ChatHookHandler() {
+				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Tag eingeben:", new ChatHookHandler() {
 
 					@Override
 					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getTcc().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settag " + event.getMessage())) {
+						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settag " + event.getMessage())) {
 							reopenSoon();
 							return true;
 						}
@@ -98,11 +98,11 @@ public class GeneralOptionsMenu extends SuperInventory {
 			@Override
 			public void run() {
 				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getTcc().getPrefix() + "§7Neuen Title eingeben:", new ChatHookHandler() {
+				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Title eingeben:", new ChatHookHandler() {
 
 					@Override
 					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getTcc().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settitle " + event.getMessage())) {
+						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settitle " + event.getMessage())) {
 							reopenSoon();
 							return true;
 						}
@@ -118,11 +118,11 @@ public class GeneralOptionsMenu extends SuperInventory {
 			@Override
 			public void run() {
 				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getTcc().getPrefix() + "§7Neue Teamfarbe eingeben:", new ChatHookHandler() {
+				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neue Teamfarbe eingeben:", new ChatHookHandler() {
 
 					@Override
 					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getTcc().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team setcolor " + event.getMessage())) {
+						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team setcolor " + event.getMessage())) {
 							reopenSoon();
 							return true;
 						}

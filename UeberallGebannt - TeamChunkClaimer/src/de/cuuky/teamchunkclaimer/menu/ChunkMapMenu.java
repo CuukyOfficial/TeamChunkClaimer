@@ -77,7 +77,7 @@ public class ChunkMapMenu extends SuperInventory {
 		this.fillInventory = false;
 
 		this.player = claimer.getEntityHandler().getPlayer(opener.getName());
-		this.claimer.getCfw().getInventoryManager().registerInventory(this);
+		this.claimer.getCuukyFrameWork().getInventoryManager().registerInventory(this);
 		open();
 	}
 

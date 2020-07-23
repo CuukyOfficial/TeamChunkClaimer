@@ -24,7 +24,7 @@ public class TeamMainMenu extends SuperInventory {
 
 		this.player = player;
 
-		player.getHandler().getTcc().getCfw().getInventoryManager().registerInventory(this);
+		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
 		open();
 	}
 
@@ -73,7 +73,7 @@ public class TeamMainMenu extends SuperInventory {
 
 			@Override
 			public void run() {
-				new ChunkMapMenu(player.getHandler().getTcc(), player.getPlayer());
+				new ChunkMapMenu(player.getHandler().getClaimer(), player.getPlayer());
 			}
 		});
 		return true;

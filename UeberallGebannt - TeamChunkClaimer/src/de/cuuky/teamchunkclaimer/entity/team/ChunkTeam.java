@@ -112,31 +112,31 @@ public class ChunkTeam implements CFWSerializeable {
 		for (ChunkPlayer member : this.members.keySet()) {
 			member.setTeam(null);
 			if (member.isOnline())
-				member.getPlayer().sendMessage(this.handler.getTcc().getPrefix() + "Dein Team wurde aufgelöst!");
+				member.getPlayer().sendMessage(this.handler.getClaimer().getPrefix() + "Dein Team wurde aufgelöst!");
 		}
 
 		this.members.clear();
 	}
 
 	public void addMember(ChunkPlayer player, TeamMemberType memberType) {
-		this.sendMessage(this.handler.getTcc().getPrefix() + "§5" + player.getName() + " §7ist deinem Team beigetreten!");
+		this.sendMessage(this.handler.getClaimer().getPrefix() + "§5" + player.getName() + " §7ist deinem Team beigetreten!");
 
 		this.members.put(player, memberType);
 		player.setTeam(this);
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void removeMember(ChunkPlayer player) {
 		this.members.remove(player);
 		player.setTeam(null);
 
-		this.sendMessage(this.handler.getTcc().getPrefix() + "§5" + player.getName() + " §7hat dein Team verlassen!");
+		this.sendMessage(this.handler.getClaimer().getPrefix() + "§5" + player.getName() + " §7hat dein Team verlassen!");
 
 		checkChunks(player);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void setMemberType(ChunkPlayer player, TeamMemberType memberType) {
@@ -146,10 +146,10 @@ public class ChunkTeam implements CFWSerializeable {
 		}
 
 		this.members.put(player, memberType);
-		this.sendMessage(this.handler.getTcc().getPrefix() + "§5" + player.getName() + " §7ist nun ein §5" + memberType.toString() + "§7!");
+		this.sendMessage(this.handler.getClaimer().getPrefix() + "§5" + player.getName() + " §7ist nun ein §5" + memberType.toString() + "§7!");
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMemberMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMemberMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public TeamMemberType getMemberType(ChunkPlayer player) {
@@ -176,20 +176,20 @@ public class ChunkTeam implements CFWSerializeable {
 	public void addChunk(Chunk chunk, ChunkPlayer claimedBy) {
 		ClaimChunk newChunk = null;
 		this.claimedChunks.add(newChunk = new ClaimChunk(this, chunk, claimedBy));
-		this.sendMessage(this.handler.getTcc().getPrefix() + "Ein Chunk bei " + "X: " + newChunk.getLocationX() + ", Z: " + newChunk.getLocationZ() + " in " + newChunk.getWorld() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
+		this.sendMessage(this.handler.getClaimer().getPrefix() + "Ein Chunk bei " + "X: " + newChunk.getLocationX() + ", Z: " + newChunk.getLocationZ() + " in " + newChunk.getWorld() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkMapMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(ChunkMapMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(ChunkListMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void removeChunk(ClaimChunk chunk) {
 		this.claimedChunks.remove(chunk);
-		this.sendMessage(this.handler.getTcc().getPrefix() + "Dein Team-Chunk bei " + "X: " + chunk.getLocationX() + ", Z: " + chunk.getLocationZ() + " in " + chunk.getWorld() + " wurde entclaimt!");
+		this.sendMessage(this.handler.getClaimer().getPrefix() + "Dein Team-Chunk bei " + "X: " + chunk.getLocationX() + ", Z: " + chunk.getLocationZ() + " in " + chunk.getWorld() + " wurde entclaimt!");
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkMapMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(ChunkMapMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(ChunkListMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public boolean hasMaximumChunksReached() {
@@ -222,7 +222,7 @@ public class ChunkTeam implements CFWSerializeable {
 			break;
 		}
 
-		return extraRegion ? getChunkRegions() + 1 <= this.handler.getTcc().getConfiguration().getMaxChunkGroups() : true;
+		return extraRegion ? getChunkRegions() + 1 <= this.handler.getClaimer().getConfiguration().getMaxChunkGroups() : true;
 	}
 
 	@Override
@@ -242,7 +242,7 @@ public class ChunkTeam implements CFWSerializeable {
 		for (String uuid : this.memberIds.keySet()) {
 			ChunkPlayer player = handler.getPlayer(uuid);
 			if (player == null) {
-				System.err.println(handler.getTcc().getPrefix() + "COULD NOT FIND PLAYER '" + uuid + "'! Did you delete it manually?");
+				System.err.println(handler.getClaimer().getPrefix() + "COULD NOT FIND PLAYER '" + uuid + "'! Did you delete it manually?");
 				continue;
 			}
 
@@ -262,7 +262,7 @@ public class ChunkTeam implements CFWSerializeable {
 	public void setFlag(ChunkFlag flag, boolean enabled) {
 		this.flags.put(flag, enabled);
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(FlagOptionsMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(FlagOptionsMenu.class);
 	}
 
 	public boolean getFlag(ChunkFlag flag) {
@@ -305,7 +305,7 @@ public class ChunkTeam implements CFWSerializeable {
 	public void setName(String name) {
 		this.name = name;
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public String getTitle() {
@@ -315,7 +315,7 @@ public class ChunkTeam implements CFWSerializeable {
 	public void setTitle(String title) {
 		this.title = title;
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public String getTag() {
@@ -325,13 +325,13 @@ public class ChunkTeam implements CFWSerializeable {
 	public void setTag(String tag) {
 		this.tag = tag;
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public void setColor(String color) {
 		this.color = color;
 
-		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
+		this.handler.getClaimer().getCuukyFrameWork().getInventoryManager().updateInventories(GeneralOptionsMenu.class);
 	}
 
 	public String getColor() {

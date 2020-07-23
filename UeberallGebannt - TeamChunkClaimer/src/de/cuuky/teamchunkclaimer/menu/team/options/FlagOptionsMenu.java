@@ -21,7 +21,7 @@ public class FlagOptionsMenu extends SuperInventory {
 
 		this.player = player;
 
-		player.getHandler().getTcc().getCfw().getInventoryManager().registerInventory(this);
+		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
 		open();
 	}
 

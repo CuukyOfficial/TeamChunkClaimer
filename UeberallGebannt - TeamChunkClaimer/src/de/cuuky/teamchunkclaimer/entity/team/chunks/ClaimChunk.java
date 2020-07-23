@@ -24,7 +24,7 @@ public class ClaimChunk implements CFWSerializeable {
 	@CFWSerializeField(path = "chunkZ")
 	private int chunkZ;
 
-	@CFWSerializeField(path = "claimedAt")
+	@CFWSerializeField(path = "claimedBy")
 	private String claimedBy;
 
 	@CFWSerializeField(path = "claimedAt")

@@ -75,8 +75,13 @@ public class TeamCommand implements CommandExecutor {
 				return false;
 			}
 
-			if (args[1].length() >= 8) {
+			if (args[1].length() > 8) {
 				sender.sendMessage(claimer.getPrefix() + "Teamlänge darf 8 nicht überschreiten!");
+				return false;
+			}
+
+			if (claimer.getEntityHandler().getTeam(args[1]) != null) {
+				sender.sendMessage(claimer.getPrefix() + "Team existiert bereits!");
 				return false;
 			}
 
@@ -138,6 +143,11 @@ public class TeamCommand implements CommandExecutor {
 		// MOD COMMANDS
 
 		if (args[0].equalsIgnoreCase("setcolor")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -147,17 +157,22 @@ public class TeamCommand implements CommandExecutor {
 				sender.sendMessage(claimer.getPrefix() + "/team setcolor <Farbe>");
 				return false;
 			}
-			
+
 			if (args[1].length() < 2 || !args[1].startsWith("&")) {
 				sender.sendMessage(claimer.getPrefix() + "Bitte gib eine gültige Farbe ein.");
 				player.getNetworkManager().sendLinkedMessage(claimer.getPrefix() + "Klicke hier für eine Liste.", "https://static.planetminecraft.com/files/resource_media/screenshot/1444/minecraftcolourcodes8294254_lrg.jpg");
 				return false;
 			}
-			
+
 			player.getTeam().setColor(args[1]);
 			sender.sendMessage(claimer.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getColor() + player.getTeam().getColor().replace('§', '&') + " §7gesetzt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("rename")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -177,6 +192,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + "Das Team wurde erfolgreich umbenannt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("settag")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -196,6 +216,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + "Tag erfolgreich geändert!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("settitle")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -216,6 +241,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + "Title erfolgreich geändert!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("invite")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -246,6 +276,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + "Der Spieler wurde erfolgreich in dein Team eingeladen!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("kick")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
@@ -277,8 +312,13 @@ public class TeamCommand implements CommandExecutor {
 			return true;
 
 			// OWNER COMMANDS
-			
+
 		} else if (args[0].equalsIgnoreCase("promote")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			if (player.getTeam().getMemberType(player) != TeamMemberType.OWNER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;

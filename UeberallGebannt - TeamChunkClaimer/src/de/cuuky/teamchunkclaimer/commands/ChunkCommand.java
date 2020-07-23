@@ -147,12 +147,12 @@ public class ChunkCommand implements CommandExecutor {
 
 		// MOD COMMANDS
 
-		// if (!player.getTeam().equals(chunk.getTeam())) {
-		// sender.sendMessage(tcc.getPrefix() + "Dieser Chunk gehört nicht deinem Team!");
-		// return false;
-		// }
-
 		if (args[0].equalsIgnoreCase("flag")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+			
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;

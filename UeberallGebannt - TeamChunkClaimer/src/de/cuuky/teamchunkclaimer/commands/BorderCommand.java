@@ -15,6 +15,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.cuuky.cfw.utils.DirectionFace;
+import de.cuuky.cfw.version.BukkitVersion;
+import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
@@ -103,8 +105,14 @@ public class BorderCommand implements CommandExecutor {
 
 								final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;
 								final int locX = (int) locs[0] + chunkX + add, locY = y, locZ = (int) locs[1] + chunkZ + add;
-
-								player.getPlayer().playEffect(new Location(world, locX, locY, locZ), Effect.HAPPY_VILLAGER, 1);
+								Effect effect = null;
+								if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12))
+									// 1.13+
+									effect = Effect.valueOf("VILLAGER_PLANT_GROW");
+								else
+									// < 1.12
+									effect = Effect.valueOf("VILLAGER_HAPPY");
+								player.getPlayer().playEffect(new Location(world, locX, locY, locZ), effect, 1);
 							}
 						}
 					}

@@ -75,9 +75,12 @@ public class BorderCommand implements CommandExecutor {
 	public void sendBorders(ChunkPlayer player, int mode) {
 		this.borders.put(player, new BukkitRunnable() {
 
-			@SuppressWarnings("deprecation")
+			@SuppressWarnings({ "deprecation" })
 			@Override
 			public void run() {
+				if (!player.isOnline())
+					return;
+
 				World world = player.getPlayer().getWorld();
 				Location pLocation = player.getPlayer().getLocation();
 				for (ClaimChunk chunk : player.getTeam().getClaimedChunks()) {

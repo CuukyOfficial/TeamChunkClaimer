@@ -21,60 +21,60 @@ import de.cuuky.teamchunkclaimer.utils.WorldGuardChecker;
 
 public class ChunkCommand implements CommandExecutor {
 
-	private ChunkClaimer tcc;
+	private ChunkClaimer claimer;
 
-	public ChunkCommand(ChunkClaimer tcc) {
-		this.tcc = tcc;
+	public ChunkCommand(ChunkClaimer claimer) {
+		this.claimer = claimer;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage(tcc.getPrefix() + "Not for console!");
+			sender.sendMessage(claimer.getPrefix() + "Not for console!");
 			return false;
 		}
 
 		if (args.length == 0) {
-			sender.sendMessage(tcc.getPrefix() + "/chunk map - Öffnet ein maximal großes GUI in dem man eine 'Karte' der Umgebung");
-			sender.sendMessage(tcc.getPrefix() + "/chunk info [x] [z] - Zeigt Infos zu dem Chunk auf dem du stehst");
-			sender.sendMessage(tcc.getPrefix() + "/chunk claim [x] [z]- Claimt den Chunk für das Team");
-			sender.sendMessage(tcc.getPrefix() + "/chunk unclaim [x] [z] - Unclaimt den Chunk vom Team");
-			sender.sendMessage(tcc.getPrefix() + "/chunk list - Öffnet ein GUI mit allen Chunks deines Teams");
-			sender.sendMessage(tcc.getPrefix() + "/chunk flag <pvp/use/build> <true/false> - Stellt die Flags für alle Chunks des Teams ein, wenn nur /chunk flag dann GUI");
+			sender.sendMessage(claimer.getPrefix() + "/chunk map - Öffnet ein maximal großes GUI in dem man eine 'Karte' der Umgebung");
+			sender.sendMessage(claimer.getPrefix() + "/chunk info [x] [z] - Zeigt Infos zu dem Chunk auf dem du stehst");
+			sender.sendMessage(claimer.getPrefix() + "/chunk claim [x] [z]- Claimt den Chunk für das Team");
+			sender.sendMessage(claimer.getPrefix() + "/chunk unclaim [x] [z] - Unclaimt den Chunk vom Team");
+			sender.sendMessage(claimer.getPrefix() + "/chunk list - Öffnet ein GUI mit allen Chunks deines Teams");
+			sender.sendMessage(claimer.getPrefix() + "/chunk flag <pvp/use/build> <true/false> - Stellt die Flags für alle Chunks des Teams ein, wenn nur /chunk flag dann GUI");
 			return true;
 		}
 
-		ChunkPlayer player = tcc.getEntityHandler().getPlayer(((Player) sender).getUniqueId());
+		ChunkPlayer player = claimer.getEntityHandler().getPlayer(((Player) sender).getUniqueId());
 		Chunk worldChunk = player.getPlayer().getLocation().getChunk();
 		if (args.length > 1) {
 			try {
 				int x = Integer.valueOf(args[1]), z = Integer.valueOf(args[2]);
 				worldChunk = player.getPlayer().getWorld().getChunkAt(x / 16, z / 16);
 			} catch (Exception e) {
-				sender.sendMessage(tcc.getPrefix() + "X und Z sind keine Zahlen! /chunk");
+				sender.sendMessage(claimer.getPrefix() + "X und Z sind keine Zahlen! /chunk");
 				return false;
 			}
 		}
 
-		ClaimChunk chunk = tcc.getEntityHandler().getChunk(worldChunk);
-		if (tcc.getConfiguration().getBlacklistetWorlds().contains(player.getPlayer().getWorld().getName())) {
-			sender.sendMessage(tcc.getPrefix() + "In dieser Welt kannst du das Chunksystem nicht nutzen!");
+		ClaimChunk chunk = claimer.getEntityHandler().getChunk(worldChunk);
+		if (claimer.getConfiguration().getBlacklistetWorlds().contains(player.getPlayer().getWorld().getName())) {
+			sender.sendMessage(claimer.getPrefix() + "In dieser Welt kannst du das Chunksystem nicht nutzen!");
 			return false;
 		}
 
 		if (args[0].equalsIgnoreCase("map")) {
-			new ChunkMapMenu(tcc, player.getPlayer());
+			new ChunkMapMenu(claimer, player.getPlayer());
 			return true;
 		} else if (args[0].equalsIgnoreCase("info")) {
 			if (chunk == null) {
-				sender.sendMessage(tcc.getPrefix() + "Chunk ungeclaimt!");
+				sender.sendMessage(claimer.getPrefix() + "Chunk ungeclaimt!");
 				return false;
 			}
 
-			sender.sendMessage(tcc.getPrefix() + "§5Chunk §7" + chunk.getLocationX() + "§8:§7" + chunk.getLocationZ() + " §7in " + chunk.getWorld() + "§7:");
-			sender.sendMessage(tcc.getPrefix() + "§7Claimed at: " + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(chunk.getClaimedAt()));
-			sender.sendMessage(tcc.getPrefix() + "§7Chunk-Team: " + chunk.getTeam().getDisplayname());
-			sender.sendMessage(tcc.getPrefix() + "§7Claimed by: " + chunk.getClaimedBy());
+			sender.sendMessage(claimer.getPrefix() + "§5Chunk §7" + chunk.getLocationX() + "§8:§7" + chunk.getLocationZ() + " §7in " + chunk.getWorld() + "§7:");
+			sender.sendMessage(claimer.getPrefix() + "§7Claimed at: " + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(chunk.getClaimedAt()));
+			sender.sendMessage(claimer.getPrefix() + "§7Chunk-Team: " + chunk.getTeam().getDisplayname());
+			sender.sendMessage(claimer.getPrefix() + "§7Claimed by: " + chunk.getClaimedBy());
 			return true;
 		}
 
@@ -82,7 +82,7 @@ public class ChunkCommand implements CommandExecutor {
 
 		if (args[0].equalsIgnoreCase("gui")) {
 			if (player.getTeam() == null) {
-				sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
 				return false;
 			}
 
@@ -90,53 +90,53 @@ public class ChunkCommand implements CommandExecutor {
 			return true;
 		} else if (args[0].equalsIgnoreCase("claim")) {
 			if (player.getTeam() == null) {
-				sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
 				return false;
 			}
 
 			if (chunk != null) {
-				sender.sendMessage(tcc.getPrefix() + "Dieser Chunk ist bereits geclaimt (/chunk info)");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist bereits geclaimt (/chunk info)");
 				return false;
 			}
 
 			if (player.getTeam().hasMaximumChunksReached()) {
-				sender.sendMessage(tcc.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunks erreicht!");
+				sender.sendMessage(claimer.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunks erreicht!");
 				return false;
 			}
 
 			if (!player.getTeam().canAddChunk(worldChunk)) {
-				sender.sendMessage(tcc.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunkregionen erreicht!");
+				sender.sendMessage(claimer.getPrefix() + "Dein Team hat bereits die volle Anzahl an Chunkregionen erreicht!");
 				return false;
 			}
 
 			try {
 				if (WorldGuardChecker.isInWorldGuardRegion(new Location(worldChunk.getWorld(), worldChunk.getX() * 16, player.getPlayer().getLocation().getY(), worldChunk.getZ() * 16))) {
-					sender.sendMessage(tcc.getPrefix() + "Dieser Bereich ist von WorldGuard gesichert!");
+					sender.sendMessage(claimer.getPrefix() + "Dieser Bereich ist von WorldGuard gesichert!");
 					return false;
 				}
 			} catch (Exception | Error e) {}
 
 			player.getTeam().addChunk(worldChunk, player);
-			sender.sendMessage(tcc.getPrefix() + "Chunk erfolgreich geclaimt!");
+			sender.sendMessage(claimer.getPrefix() + "Chunk erfolgreich geclaimt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("unclaim")) {
 			if (player.getTeam() == null) {
-				sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
 				return false;
 			}
 
 			if (chunk == null) {
-				sender.sendMessage(tcc.getPrefix() + "Dieser Chunk ist noch nicht geclaimt!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk ist noch nicht geclaimt!");
 				return false;
 			}
 
 			if (!player.getTeam().equals(chunk.getTeam()) && !player.getPlayer().hasPermission("chunk.admin")) {
-				sender.sendMessage(tcc.getPrefix() + "Dieser Chunk gehört nicht deinem Team!");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Chunk gehört nicht deinem Team!");
 				return false;
 			}
 
 			player.getTeam().removeChunk(chunk);
-			sender.sendMessage(tcc.getPrefix() + "Chunk erfolgreich unclaimed!");
+			sender.sendMessage(claimer.getPrefix() + "Chunk erfolgreich unclaimed!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("list")) {
 			new ChunkListMenu(player);
@@ -152,12 +152,12 @@ public class ChunkCommand implements CommandExecutor {
 
 		if (args[0].equalsIgnoreCase("flag")) {
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
-				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
 			}
 
 			if (args.length < 3) {
-				sender.sendMessage(tcc.getPrefix() + "/team flag <pvp/use/build> <true/false>");
+				sender.sendMessage(claimer.getPrefix() + "/team flag <pvp/use/build> <true/false>");
 				return false;
 			}
 
@@ -165,7 +165,7 @@ public class ChunkCommand implements CommandExecutor {
 			try {
 				flag = ChunkFlag.valueOf(args[1].toUpperCase());
 			} catch (IllegalArgumentException e) {
-				sender.sendMessage(tcc.getPrefix() + "Flag nicht gefunden! /team flag");
+				sender.sendMessage(claimer.getPrefix() + "Flag nicht gefunden! /team flag");
 				return false;
 			}
 
@@ -173,21 +173,21 @@ public class ChunkCommand implements CommandExecutor {
 			try {
 				enabled = Boolean.valueOf(args[2]);
 			} catch (Exception e) {
-				sender.sendMessage(tcc.getPrefix() + "/team flag <pvp/use/build> <true/false>");
+				sender.sendMessage(claimer.getPrefix() + "/team flag <pvp/use/build> <true/false>");
 				return false;
 			}
 
 			if (player.getTeam().getFlag(flag) == enabled) {
-				sender.sendMessage(tcc.getPrefix() + flag.toString() + " ist bereits auf " + enabled + "!");
+				sender.sendMessage(claimer.getPrefix() + flag.toString() + " ist bereits auf " + enabled + "!");
 				return false;
 			}
 
 			player.getTeam().setFlag(flag, enabled);
-			sender.sendMessage(tcc.getPrefix() + "Flag erfolgreich gesetzt!");
+			sender.sendMessage(claimer.getPrefix() + "Flag erfolgreich gesetzt!");
 			return true;
 		}
 
-		sender.sendMessage(tcc.getPrefix() + "Command nicht gefunden! /chunk");
+		sender.sendMessage(claimer.getPrefix() + "Command nicht gefunden! /chunk");
 		return false;
 	}
 }

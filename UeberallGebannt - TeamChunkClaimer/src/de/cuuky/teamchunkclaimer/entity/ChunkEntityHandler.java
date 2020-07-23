@@ -106,7 +106,7 @@ public class ChunkEntityHandler {
 
 	public ChunkPlayer getPlayer(String nameOrUuid) {
 		for (ChunkPlayer player : this.players) {
-			if (!player.getName().equals(nameOrUuid) && !player.getUuid().equals(nameOrUuid))
+			if ((player.getName() != null && !player.getName().equals(nameOrUuid)) && !player.getUuid().equals(nameOrUuid))
 				continue;
 
 			return player;

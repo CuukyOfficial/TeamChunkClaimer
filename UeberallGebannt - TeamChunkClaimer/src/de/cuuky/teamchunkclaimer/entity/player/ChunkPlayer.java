@@ -26,7 +26,7 @@ public class ChunkPlayer implements CFWSerializeable {
 	@CFWSerializeField(path = "allowedChunks")
 	private int allowedChunks;
 
-	@CFWSerializeField(path = "invites")
+	@CFWSerializeField(path = "invites", keyClass = TeamInvite.class)
 	private List<TeamInvite> invites;
 
 	private ChunkTeam team;
@@ -103,7 +103,7 @@ public class ChunkPlayer implements CFWSerializeable {
 	}
 
 	public void removeInvite(TeamInvite invite) {
-		this.invites.add(invite);
+		this.invites.remove(invite);
 	}
 
 	public String getUuid() {

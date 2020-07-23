@@ -124,8 +124,9 @@ public class TeamCommand implements CommandExecutor {
 			new TeamMainMenu(player);
 			return true;
 		} else if (args[0].equalsIgnoreCase("leave")) {
-			player.getTeam().removeMember(player);
-			sender.sendMessage(tcc.getPrefix() + "Du hast das Team " + player.getTeam().getDisplayname() + " §7erfolgreich verlassen");
+			ChunkTeam team = player.getTeam();
+			team.removeMember(player);
+			sender.sendMessage(tcc.getPrefix() + "Du hast das Team " + team.getDisplayname() + " §7erfolgreich verlassen");
 			return true;
 		}
 

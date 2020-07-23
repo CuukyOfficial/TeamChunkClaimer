@@ -13,6 +13,7 @@ import de.cuuky.teamchunkclaimer.entity.team.TeamMemberType;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ChunkFlag;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 import de.cuuky.teamchunkclaimer.menu.ChunkMapMenu;
+import de.cuuky.teamchunkclaimer.menu.team.ChunkListMenu;
 import de.cuuky.teamchunkclaimer.utils.WorldGuardChecker;
 
 public class ChunkCommand implements CommandExecutor {
@@ -35,7 +36,7 @@ public class ChunkCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "/chunk map - Öffnet ein maximal großes GUI in dem man eine 'Karte' der Umgebung");
 			sender.sendMessage(tcc.getPrefix() + "/chunk claim - Claimt den Chunk für das Team");
 			sender.sendMessage(tcc.getPrefix() + "/chunk unclaim - Unclaimt den Chunk vom Team");
-			sender.sendMessage(tcc.getPrefix() + "/chunk list - Öffnet ein GUI mit allen Chunks");
+			sender.sendMessage(tcc.getPrefix() + "/chunk list - Öffnet ein GUI mit allen Chunks deines Teams");
 			sender.sendMessage(tcc.getPrefix() + "/chunk flag <pvp/use/build> <true/false> - Stellt die Flags für alle Chunks des Teams ein, wenn nur /chunk flag dann GUI");
 			return true;
 		}
@@ -112,6 +113,9 @@ public class ChunkCommand implements CommandExecutor {
 
 			player.getTeam().removeChunk(chunk);
 			sender.sendMessage(tcc.getPrefix() + "Chunk erfolgreich unclaimed!");
+			return true;
+		} else if(args[0].equalsIgnoreCase("list")) {
+			new ChunkListMenu(player);
 			return true;
 		}
 

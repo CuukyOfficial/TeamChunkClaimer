@@ -1,6 +1,5 @@
 package de.cuuky.teamchunkclaimer.menu.team;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +46,6 @@ public class TeamMemberMenu extends SuperInventory {
 	@Override
 	public boolean onOpen() {
 		List<ChunkPlayer> members = player.getTeam().getMembers().keySet().stream().collect(Collectors.toList());
-		Collections.reverse(members);
 
 		int start = getSize() * (getPage() - 1);
 		for (int i = 0; i != getSize(); i++) {

@@ -115,29 +115,34 @@ public class TeamCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (player.getTeam() == null) {
-			sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
-			return false;
-		}
-
 		if (args[0].equalsIgnoreCase("gui")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			new TeamMainMenu(player);
 			return true;
 		} else if (args[0].equalsIgnoreCase("leave")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(tcc.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
+
 			ChunkTeam team = player.getTeam();
 			team.removeMember(player);
 			sender.sendMessage(tcc.getPrefix() + "Du hast das Team " + team.getDisplayname() + " §7erfolgreich verlassen");
 			return true;
 		}
 
-		if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
-			sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
-			return false;
-		}
-
 		// MOD COMMANDS
 
 		if (args[0].equalsIgnoreCase("setcolor")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team setcolor <Farbe>");
 				return false;
@@ -147,6 +152,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getDisplayname() + " §7gesetzt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("rename")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team rename <Name>");
 				return false;
@@ -161,6 +171,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "Team erfolgreich umbenannt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("settag")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team settag <tag>");
 				return false;
@@ -175,6 +190,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "Tag erfolgreich geändert!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("settitle")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team setitle <title>");
 				return false;
@@ -190,6 +210,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "Title erfolgreich geändert!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("invite")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team invite <Spieler>");
 				return false;
@@ -215,6 +240,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + "Spieler erfolgreich in dein Team eingeladen!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("kick")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team kick <Spieler>");
 				return false;
@@ -240,6 +270,11 @@ public class TeamCommand implements CommandExecutor {
 			sender.sendMessage(tcc.getPrefix() + toKick.getName() + " wurde erfolgreich aus deinem Team geworfen!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("promote")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			if (args.length < 2) {
 				sender.sendMessage(tcc.getPrefix() + "/team promote <Spieler>");
 				return false;
@@ -266,20 +301,22 @@ public class TeamCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
-			sender.sendMessage(tcc.getPrefix() + "Du musst Team-Owner sein, um diese Einstellung vornehmen zu können!");
-			return false;
-		}
-
 		// OWNER COMMANDS
 
 		if (args[0].equalsIgnoreCase("delete")) {
+			if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
+				sender.sendMessage(tcc.getPrefix() + "Du musst Team-Owner sein, um diese Einstellung vornehmen zu können!");
+				return false;
+			}
+
 			this.tcc.getEntityHandler().removeTeam(player.getTeam());
 			player.getTeam().remove();
 
 			sender.sendMessage(tcc.getPrefix() + "Team erfolgreich aufgelöst!");
 			return true;
 		}
+
+		sender.sendMessage(tcc.getPrefix() + "Command nicht gefunden! /team");
 		return false;
 	}
 }

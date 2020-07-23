@@ -14,6 +14,7 @@ import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ChunkFlag;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
+import de.cuuky.teamchunkclaimer.menu.ChunkMapMenu;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
 import de.cuuky.teamchunkclaimer.menu.team.ChunkListMenu;
 import de.cuuky.teamchunkclaimer.menu.team.TeamMemberMenu;
@@ -173,17 +174,20 @@ public class ChunkTeam implements CFWSerializeable {
 	}
 
 	public void addChunk(Chunk chunk, ChunkPlayer claimedBy) {
-		this.claimedChunks.add(new ClaimChunk(this, chunk, claimedBy));
-		this.sendMessage(this.handler.getTcc().getPrefix() + "Ein Chunk bei " + "X: " + chunk.getX() + ", Z: " + chunk.getZ() + " in " + chunk.getWorld().getName() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
+		ClaimChunk newChunk = null;
+		this.claimedChunks.add(newChunk = new ClaimChunk(this, chunk, claimedBy));
+		this.sendMessage(this.handler.getTcc().getPrefix() + "Ein Chunk bei " + "X: " + newChunk.getLocationX() + ", Z: " + newChunk.getLocationZ() + " in " + newChunk.getWorld() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
 
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkMapMenu.class);
 		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
 		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
 
 	public void removeChunk(ClaimChunk chunk) {
 		this.claimedChunks.remove(chunk);
-		this.sendMessage(this.handler.getTcc().getPrefix() + "Dein Team-Chunk bei " + "X: " + chunk.getChunkX() + ", Z: " + chunk.getChunkZ() + " in " + chunk.getWorld() + " wurde entclaimt!");
+		this.sendMessage(this.handler.getTcc().getPrefix() + "Dein Team-Chunk bei " + "X: " + chunk.getLocationX() + ", Z: " + chunk.getLocationZ() + " in " + chunk.getWorld() + " wurde entclaimt!");
 
+		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkMapMenu.class);
 		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(ChunkListMenu.class);
 		this.handler.getTcc().getCfw().getInventoryManager().updateInventories(TeamMainMenu.class);
 	}
@@ -283,7 +287,7 @@ public class ChunkTeam implements CFWSerializeable {
 	}
 
 	public String getDisplayname() {
-		return (this.color != null ? getColor() : "") + this.name;
+		return getColor() + this.name;
 	}
 
 	public ChunkEntityHandler getHandler() {
@@ -331,7 +335,7 @@ public class ChunkTeam implements CFWSerializeable {
 	}
 
 	public String getColor() {
-		return color == null ? null : ChatColor.translateAlternateColorCodes('&', color);
+		return color == null ? "§f" : ChatColor.translateAlternateColorCodes('&', color);
 	}
 
 	public List<ClaimChunk> getClaimedChunks() {

@@ -25,7 +25,7 @@ public class ChunkConfigurationHandler extends BasicConfigurationHandler {
 		this.prefix = ChatColor.translateAlternateColorCodes('&', getString("prefix", "&8[&5Chunk&8] &7"));
 		this.teamChatFormat = ChatColor.translateAlternateColorCodes('&', getString("teamChatFormat", "&8[%team%&8] &5%player%&8: &f%message%"));
 
-		this.buildInUnclaimed = getBool("buildInUnclaimed", true);
+		this.buildInUnclaimed = getBool("chunks.buildInUnclaimed", true);
 		this.maxChunkGroups = getInt("chunks.maxChunkGroups", 2);
 		this.blacklistetWorlds = (ArrayList<String>) getValue("chunks.blacklistetWorlds", new ArrayList<String>());
 	}

@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.menu.SuperInventory;
+import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
@@ -58,7 +59,13 @@ public class ChunkListMenu extends SuperInventory {
 				break;
 
 			ClaimChunk chunk = chunks.get(start);
-			linkItemTo(i, new ItemBuilder().displayname("§7X§8:§5" + chunk.getChunkX() + "§8, §7Z§8:§5" + chunk.getChunkZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: §a" + chunk.getClaimedBy(), "§7Claimed at§8: §a" + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt())).build(), null);
+			linkItemTo(i, new ItemBuilder().displayname("§7X§8:§5" + chunk.getLocationX() + "§8, §7Z§8:§5" + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: §a" + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Claimed at§8: §a" + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "Klicken zum unclaimen").build(),  new ItemClickHandler() {
+				
+				@Override
+				public void onItemClick(InventoryClickEvent event) {
+					player.getTeam().removeChunk(chunk);
+				}
+			});
 			start++;
 		}
 

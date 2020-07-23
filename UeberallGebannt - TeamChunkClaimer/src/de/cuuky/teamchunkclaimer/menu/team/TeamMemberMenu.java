@@ -53,7 +53,7 @@ public class TeamMemberMenu extends SuperInventory {
 				break;
 
 			ChunkPlayer member = members.get(start);
-			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: §5" + member.getTeam().getMemberType(member).toString()).buildSkull(), null);
+			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: §5" + member.getTeam().getMemberType(member).toString()).buildSkull());
 			start++;
 		}
 

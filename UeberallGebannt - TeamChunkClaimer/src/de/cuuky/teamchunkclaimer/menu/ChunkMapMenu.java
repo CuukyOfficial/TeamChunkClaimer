@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.menu.SuperInventory;
+import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
@@ -65,7 +66,7 @@ public class ChunkMapMenu extends SuperInventory {
 	}
 
 	private ChunkClaimer claimer;
-	private ChunkPlayer cPlayer;
+	private ChunkPlayer player;
 	private Face face;
 
 	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
@@ -75,7 +76,7 @@ public class ChunkMapMenu extends SuperInventory {
 		this.setModifier = false;
 		this.fillInventory = false;
 
-		this.cPlayer = claimer.getEntityHandler().getPlayer(opener.getName());
+		this.player = claimer.getEntityHandler().getPlayer(opener.getName());
 		this.claimer.getCfw().getInventoryManager().registerInventory(this);
 		open();
 	}
@@ -89,13 +90,14 @@ public class ChunkMapMenu extends SuperInventory {
 		for (double y = height * -1; y <= height; y++) {
 			for (double x = width * -1; x <= width; x++) {
 				double[] coords = face.modifyValues(x, y);
-				double worldX = from.getX() + coords[0];
-				double worldZ = from.getZ() + coords[1];
+				int chunkX = (int) (from.getX() + coords[0]), locationX = chunkX * 16;
+				int chunkZ = (int) (from.getZ() + coords[1]), locationZ = chunkZ * 16;
 
-				ItemBuilder builder = new ItemBuilder().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem()).displayname("§fUnclaimed").lore("§7Location:", "§7X§8: §5" + (worldX * 16 + 8), "§7Z§8: §5" + (worldZ * 16 + 8), "", (x == 0 && y == 0 ? "§7Da bist du!" : ""));
-				ClaimChunk chunk = this.claimer.getEntityHandler().getChunk(from.getWorld().getChunkAt((int) worldX, (int) worldZ));
+				ItemBuilder builder = new ItemBuilder().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem()).displayname("§fUnclaimed").lore("§7Location:", "§7X§8: §5" + (locationX + 8), "§7Z§8: §5" + (locationZ + 8), "§7Linksklick = claim/Chunk info", "§7Rechtsklick = unclaim/Team info", (x == 0 && y == 0 ? "§aDa bist du!" : ""));
+				Chunk worldChunk = from.getWorld().getChunkAt(chunkX, chunkZ);
+				ClaimChunk chunk = this.claimer.getEntityHandler().getChunk(worldChunk);
 				if (chunk != null) {
-					if (cPlayer.getTeam() == null || !cPlayer.getTeam().equals(chunk.getTeam()))
+					if (player.getTeam() == null || !player.getTeam().equals(chunk.getTeam()))
 						builder.itemstack(Materials.RED_STAINED_GLASS_PANE.parseItem());
 					else
 						builder.itemstack(Materials.GREEN_STAINED_GLASS_PANE.parseItem());
@@ -105,12 +107,28 @@ public class ChunkMapMenu extends SuperInventory {
 
 				double invX = x + width;
 				double invY = y + height;
-				linkItemTo((int) ((invY * 9) + invX), builder.build(), new Runnable() {
+				linkItemTo((int) ((invY * 9) + invX), builder.build(), new ItemClickHandler() {
 
 					@Override
-					public void run() {
-						if (chunk != null)
-							claimer.getPlugin().getServer().dispatchCommand(opener, "team info " + chunk.getTeam().getName());
+					public void onItemClick(InventoryClickEvent event) {
+						ClaimChunk chunk = claimer.getEntityHandler().getChunk(worldChunk);
+						if (chunk != null) {
+							if (player.getTeam() != null && player.getTeam().equals(chunk.getTeam()) && event.isRightClick()) {
+								claimer.getPlugin().getServer().dispatchCommand(opener, "chunk unclaim " + locationX + " " + locationZ);
+								return;
+							}
+
+							if (event.isLeftClick())
+								claimer.getPlugin().getServer().dispatchCommand(opener, "chunk info " + locationX + " " + locationZ);
+							else
+								claimer.getPlugin().getServer().dispatchCommand(opener, "team info " + chunk.getTeam().getName());
+							return;
+						}
+
+						if (player.getTeam() == null || event.isRightClick())
+							return;
+
+						claimer.getPlugin().getServer().dispatchCommand(opener, "chunk claim " + locationX + " " + locationZ);
 					}
 				});
 			}

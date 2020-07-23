@@ -13,3 +13,5 @@ commands:
     description: Main Command for the teams
     aliases: [teams, factions, village]
   border:
+  	description: Shows borders for your claims
+  	aliases: [showBorder, showBorders]

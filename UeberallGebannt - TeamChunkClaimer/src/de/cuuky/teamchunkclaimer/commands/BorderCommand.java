@@ -38,7 +38,7 @@ public class BorderCommand implements CommandExecutor {
 			borderEffect = Effect.valueOf("VILLAGER_PLANT_GROW");
 		else
 			// < 1.12
-			borderEffect = Effect.valueOf("VILLAGER_HAPPY");
+			borderEffect = Effect.valueOf("HAPPY_VILLAGER");
 	}
 
 	@Override

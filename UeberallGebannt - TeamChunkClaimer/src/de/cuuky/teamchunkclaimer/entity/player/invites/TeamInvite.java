@@ -14,7 +14,7 @@ public class TeamInvite implements CFWSerializeable {
 	private long teamId;
 
 	private ChunkPlayer player;
-	
+
 	public TeamInvite(ChunkPlayer player) {
 		this.player = player;
 	}

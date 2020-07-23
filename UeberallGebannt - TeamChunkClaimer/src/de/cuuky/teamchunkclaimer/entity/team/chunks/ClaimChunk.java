@@ -82,7 +82,7 @@ public class ClaimChunk implements CFWSerializeable {
 	public int getLocationX() {
 		return this.chunkX * 16 + 8;
 	}
-	
+
 	public int getLocationZ() {
 		return this.chunkZ * 16 + 8;
 	}
@@ -114,7 +114,7 @@ public class ClaimChunk implements CFWSerializeable {
 	public String getClaimedBy() {
 		return claimedBy;
 	}
-	
+
 	public ChunkPlayer getClaimedByPlayer() {
 		return this.team.getHandler().getPlayer(claimedBy);
 	}

@@ -152,7 +152,7 @@ public class ChunkCommand implements CommandExecutor {
 				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
 				return false;
 			}
-			
+
 			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;

@@ -71,7 +71,6 @@ public class ChunkMapMenu extends SuperInventory {
 	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
 		super("§aChunkMap §8" + Face.getFace(opener.getLocation().getYaw()).getIdentifier(), opener, 45, false);
 
-		System.out.println("A:" + opener.getLocation().getYaw());
 		this.claimer = claimer;
 		this.face = Face.getFace(opener.getLocation().getYaw());
 		this.setModifier = false;

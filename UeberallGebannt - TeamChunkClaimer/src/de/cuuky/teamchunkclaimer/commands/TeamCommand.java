@@ -269,8 +269,11 @@ public class TeamCommand implements CommandExecutor {
 			player.getTeam().removeMember(toKick);
 			sender.sendMessage(claimer.getPrefix() + toKick.getName() + " wurde erfolgreich aus deinem Team geworfen!");
 			return true;
+
+			// OWNER COMMANDS
+			
 		} else if (args[0].equalsIgnoreCase("promote")) {
-			if (player.getTeam().getMemberType(player) == TeamMemberType.MEMBER) {
+			if (player.getTeam().getMemberType(player) != TeamMemberType.OWNER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Moderator sein, um diese Einstellung vornehmen zu können!");
 				return false;
 			}
@@ -292,19 +295,17 @@ public class TeamCommand implements CommandExecutor {
 			}
 
 			if (player.getTeam().getMemberType(toPromote) != TeamMemberType.MEMBER) {
-				sender.sendMessage(claimer.getPrefix() + "Du kannst diesen Spieler nicht promoten.");
+				sender.sendMessage(claimer.getPrefix() + "Dieser Spieler ist bereits Moderator.");
 				return false;
 			}
 
 			player.getTeam().setMemberType(toPromote, TeamMemberType.MODERATOR);
-			sender.sendMessage(claimer.getPrefix() + toPromote.getName() + " wurde erfolgreich als Mod registriert!");
+			sender.sendMessage(claimer.getPrefix() + toPromote.getName() + " wurde erfolgreich als Moderator registriert!");
 			return true;
 		}
 
-		// OWNER COMMANDS
-
 		if (args[0].equalsIgnoreCase("delete")) {
-			if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
+			if (player.getTeam().getMemberType(player) != TeamMemberType.OWNER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Owner sein, um diese Einstellung vornehmen zu können!");
 				return false;
 			}
@@ -312,11 +313,11 @@ public class TeamCommand implements CommandExecutor {
 			this.claimer.getEntityHandler().removeTeam(player.getTeam());
 			player.getTeam().remove();
 
-			sender.sendMessage(claimer.getPrefix() + "Team erfolgreich aufgelöst!");
+			sender.sendMessage(claimer.getPrefix() + "Das Team wurde erfolgreich aufgelöst!");
 			return true;
 		}
 
-		sender.sendMessage(claimer.getPrefix() + "Command nicht gefunden! /team");
+		sender.sendMessage(claimer.getPrefix() + "Dieser Befehl existiert nicht (/team).");
 		return false;
 	}
 }

@@ -36,7 +36,6 @@ public class ChunkMapMenu extends SuperInventory {
 	@Override
 	public boolean onOpen() {
 		double height = (45 / 9) / 2, width = 4;
-
 		Chunk from = this.opener.getLocation().getChunk();
 
 		for (double y = height * -1; y <= height; y++) {

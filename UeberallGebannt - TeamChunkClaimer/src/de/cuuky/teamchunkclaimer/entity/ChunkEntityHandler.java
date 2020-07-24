@@ -46,7 +46,6 @@ public class ChunkEntityHandler {
 	}
 
 	private void startChunkThread() {
-		System.out.println("START");
 		new BukkitRunnable() {
 
 			Map<ChunkPlayer, ClaimChunk> lastChunks = new HashMap<ChunkPlayer, ClaimChunk>();

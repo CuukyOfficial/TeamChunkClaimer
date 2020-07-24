@@ -45,7 +45,7 @@ public class TeamOptionsMenu extends SuperInventory {
 
 	@Override
 	public boolean onOpen() {
-		linkItemTo(12, new ItemBuilder().displayname("§aGenerelle Einstellungen").itemstack(Materials.SIGN.parseItem()).build(), new Runnable() {
+		linkItemTo(11, new ItemBuilder().displayname("§aGenerelle Einstellungen").itemstack(Materials.SIGN.parseItem()).build(), new Runnable() {
 
 			@Override
 			public void run() {
@@ -53,7 +53,7 @@ public class TeamOptionsMenu extends SuperInventory {
 			}
 		});
 
-		linkItemTo(14, new ItemBuilder().displayname("§5Flags").itemstack(Materials.NAME_TAG.parseItem()).build(), new Runnable() {
+		linkItemTo(15, new ItemBuilder().displayname("§5Flags").itemstack(Materials.NAME_TAG.parseItem()).build(), new Runnable() {
 
 			@Override
 			public void run() {

@@ -22,10 +22,10 @@ public class ChunkMapMenu extends SuperInventory {
 	private DirectionFace face;
 
 	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
-		super("§aChunks §8(" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier() + "§8)", opener, 45, false);
+		super("§aChunks §8(" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier() + "§8)", opener, 54, false);
 		this.claimer = claimer;
 		this.face = DirectionFace.getFace(opener.getLocation().getYaw());
-		this.setModifier = false;
+		this.setModifier = true;
 		this.fillInventory = false;
 
 		this.player = claimer.getEntityHandler().getPlayer(opener.getName());
@@ -90,7 +90,9 @@ public class ChunkMapMenu extends SuperInventory {
 
 	@Override
 	public boolean onBackClick() {
-		return false;
+		if (player.getTeam() != null)
+			new TeamMainMenu(player);
+		return true;
 	}
 
 	@Override

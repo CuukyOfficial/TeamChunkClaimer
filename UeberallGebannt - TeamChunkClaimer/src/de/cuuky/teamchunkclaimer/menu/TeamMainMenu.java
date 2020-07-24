@@ -48,6 +48,7 @@ public class TeamMainMenu extends SuperInventory {
 
 			@Override
 			public void run() {
+				System.out.println(1);
 				new TeamMemberMenu(player);
 			}
 		});

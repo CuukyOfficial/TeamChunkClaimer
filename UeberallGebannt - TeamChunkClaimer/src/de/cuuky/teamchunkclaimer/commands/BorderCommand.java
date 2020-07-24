@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.bukkit.Chunk;
 import org.bukkit.Effect;
@@ -24,6 +26,8 @@ import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 
 public class BorderCommand implements CommandExecutor {
 
+	private static final int WALL_HEIGHT = 18, WALL_WIDTH = 16, MAX_PARTICLES = 4000;
+
 	private ChunkClaimer instance;
 
 	private Map<ChunkPlayer, BukkitTask> borders;
@@ -40,7 +44,7 @@ public class BorderCommand implements CommandExecutor {
 			this.spawnParticleMethod = Player.class.getMethod("spawnParticle", particleClass, double.class, double.class, double.class, int.class);
 			this.borderEffect = particleClass.getDeclaredField("VILLAGER_HAPPY").get(null);
 		} catch (Exception e) {
-			borderEffect = Effect.valueOf("HAPPY_VILLAGER");
+			this.borderEffect = Effect.valueOf("HAPPY_VILLAGER");
 		}
 	}
 
@@ -67,6 +71,7 @@ public class BorderCommand implements CommandExecutor {
 		if (args.length == 0) {
 			sender.sendMessage(instance.getPrefix() + "/border outline - Zeigt alle Grenzen nach außen an");
 			sender.sendMessage(instance.getPrefix() + "/border all - Zeigt alle Grenzen der Chunks an");
+			sender.sendMessage(instance.getPrefix() + "Hinweis: Es werden maximal 5 Chunkgrenzen gleichzeitig angezeigt (immer die, die am nächsten von dir sind)");
 			return false;
 		}
 
@@ -84,14 +89,25 @@ public class BorderCommand implements CommandExecutor {
 				if (!player.isOnline())
 					return;
 
-				World world = player.getPlayer().getWorld();
 				Location pLocation = player.getPlayer().getLocation();
+				Map<Double, ClaimChunk> chunks = new TreeMap<Double, ClaimChunk>();
 				for (ClaimChunk chunk : new ArrayList<>(player.getTeam().getClaimedChunks())) {
-					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
-					if (Math.sqrt(Math.pow(chunkX - pLocation.getBlockX(), 2) + Math.pow(chunkZ - pLocation.getBlockZ(), 2)) >= 60)
-						continue;
+					int chunkX = chunk.getLocationX(), chunkZ = chunk.getLocationZ();
+					double distance = Math.sqrt(Math.pow(chunkX - pLocation.getX(), 2) + Math.pow(chunkZ - pLocation.getZ(), 2));
+					if (distance <= 60)
+						chunks.put(distance, chunk);
+				}
 
-					faceLoop: for (DirectionFace face : DirectionFace.values()) {
+				World world = player.getPlayer().getWorld();
+
+				int particlesSent = 0;
+				for (double distance : chunks.keySet()) {
+					ClaimChunk chunk = chunks.get(distance);
+					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
+
+					List<DirectionFace> toRender = new ArrayList<DirectionFace>();
+					int possibleParticles = 0;
+					for (DirectionFace face : DirectionFace.values()) {
 						if (mode == 1) {
 							Chunk neighbour = null;
 							switch (face) {
@@ -113,14 +129,23 @@ public class BorderCommand implements CommandExecutor {
 
 							ClaimChunk claimed = instance.getEntityHandler().getChunk(neighbour);
 							if (claimed != null && claimed.getTeam().equals(player.getTeam()))
-								continue faceLoop;
+								continue;
 						}
 
-						for (int x = 0; x <= 16; x++) {
-							for (int y = yStart; y <= yStart + 18; y++) {
-								final double[] locs = face.modifyValues(x, 0);
+						toRender.add(face);
+						possibleParticles += WALL_HEIGHT * WALL_WIDTH;
+					}
 
-								final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;
+					if (particlesSent + possibleParticles >= MAX_PARTICLES)
+						return;
+					else
+						particlesSent += possibleParticles;
+
+					for (DirectionFace face : toRender) {
+						final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;
+						for (int x = 0; x <= WALL_WIDTH; x++) {
+							for (int y = yStart; y <= yStart + WALL_HEIGHT; y++) {
+								final double[] locs = face.modifyValues(x, 0);
 								final int locX = (int) locs[0] + chunkX + add, locY = y, locZ = (int) locs[1] + chunkZ + add;
 
 								if (spawnParticleMethod != null)

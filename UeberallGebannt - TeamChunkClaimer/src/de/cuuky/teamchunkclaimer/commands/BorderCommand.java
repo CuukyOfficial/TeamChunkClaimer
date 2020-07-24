@@ -86,7 +86,7 @@ public class BorderCommand implements CommandExecutor {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
-				if (!player.isOnline())
+				if (!player.isOnline() || player.getTeam() == null)
 					return;
 
 				Location pLocation = player.getPlayer().getLocation();

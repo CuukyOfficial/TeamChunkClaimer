@@ -77,7 +77,7 @@ public class ChunkMapMenu extends SuperInventory {
 							return;
 						}
 
-						if (player.getTeam() == null || event.isRightClick())
+						if (event.isRightClick())
 							return;
 
 						claimer.getPlugin().getServer().dispatchCommand(opener, "chunk claim " + locationX + " " + locationZ);

@@ -28,6 +28,7 @@ public class ChunkListMenu extends SuperInventory {
 
 		this.setModifier = true;
 		this.fillInventory = false;
+		this.claimer = player.getHandler().getClaimer();
 		this.player = player;
 
 		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);

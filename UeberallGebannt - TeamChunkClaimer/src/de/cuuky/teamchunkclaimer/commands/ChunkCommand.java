@@ -76,7 +76,7 @@ public class ChunkCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "Chunk §7" + chunk.getLocationX() + "§8:§7" + chunk.getLocationZ() + " §7in " + chunk.getWorld() + "§7:");
 			sender.sendMessage(claimer.getPrefix() + "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(chunk.getClaimedAt()));
 			sender.sendMessage(claimer.getPrefix() + "§7Besitzer (Team)§8: " + claimer.getColorCode() + chunk.getTeam().getDisplayname());
-			sender.sendMessage(claimer.getPrefix() + "§7Besitzer (Spieler)§8: " + claimer.getColorCode() + chunk.getClaimedBy());
+			sender.sendMessage(claimer.getPrefix() + "§7Besitzer (Spieler)§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()));
 			return true;
 		}
 

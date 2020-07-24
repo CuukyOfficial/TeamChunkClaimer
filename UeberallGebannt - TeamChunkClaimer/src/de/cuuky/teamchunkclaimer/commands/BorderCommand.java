@@ -71,7 +71,7 @@ public class BorderCommand implements CommandExecutor {
 		if (args.length == 0) {
 			sender.sendMessage(instance.getPrefix() + "/border outline - Zeigt alle Grenzen nach außen an");
 			sender.sendMessage(instance.getPrefix() + "/border all - Zeigt alle Grenzen der Chunks an");
-			sender.sendMessage(instance.getPrefix() + "Hinweis: Es werden maximal 5 Chunkgrenzen gleichzeitig angezeigt (immer die, die am nächsten von dir sind)");
+			sender.sendMessage(instance.getPrefix() + "Hinweis: Es werden nicht alle Chunkgrenzen gleichzeitig angezeigt (immer die, die am nächsten von dir sind)");
 			return false;
 		}
 

@@ -46,6 +46,7 @@ public class ChunkEntityHandler {
 	}
 
 	private void startChunkThread() {
+		System.out.println("START");
 		new BukkitRunnable() {
 
 			Map<ChunkPlayer, ClaimChunk> lastChunks = new HashMap<ChunkPlayer, ClaimChunk>();
@@ -61,7 +62,7 @@ public class ChunkEntityHandler {
 
 					if (newChunk != null) {
 						if (oldChunk != null && oldChunk.getTeam().equals(newChunk.getTeam()))
-							return;
+							continue;
 
 						player.getNetworkManager().sendTitle(newChunk.getTeam().getDisplayname(), newChunk.getTeam().getTitle() != null ? newChunk.getTeam().getTitle() : "");
 					} else if (oldChunk != null)

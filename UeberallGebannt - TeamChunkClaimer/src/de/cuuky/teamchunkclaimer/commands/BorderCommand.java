@@ -1,5 +1,8 @@
 package de.cuuky.teamchunkclaimer.commands;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.cuuky.cfw.utils.DirectionFace;
-import de.cuuky.cfw.version.BukkitVersion;
-import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
@@ -26,19 +27,21 @@ public class BorderCommand implements CommandExecutor {
 	private ChunkClaimer instance;
 
 	private Map<ChunkPlayer, BukkitTask> borders;
-	private Effect borderEffect;
+	private Object borderEffect;
+	private Method spawnParticleMethod;
 
 	public BorderCommand(ChunkClaimer instance) {
 		this.instance = instance;
 
 		this.borders = new HashMap<ChunkPlayer, BukkitTask>();
 
-		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12))
-			// 1.13+
-			borderEffect = Effect.valueOf("VILLAGER_PLANT_GROW");
-		else
-			// < 1.12
+		try {
+			Class<?> particleClass = Class.forName("org.bukkit.Particle");
+			this.spawnParticleMethod = Player.class.getMethod("spawnParticle", particleClass, double.class, double.class, double.class, int.class);
+			this.borderEffect = particleClass.getDeclaredField("VILLAGER_HAPPY").get(null);
+		} catch (Exception e) {
 			borderEffect = Effect.valueOf("HAPPY_VILLAGER");
+		}
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class BorderCommand implements CommandExecutor {
 	public void sendBorders(ChunkPlayer player, int mode) {
 		this.borders.put(player, new BukkitRunnable() {
 
-			@SuppressWarnings({ "deprecation" })
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				if (!player.isOnline())
@@ -83,7 +86,7 @@ public class BorderCommand implements CommandExecutor {
 
 				World world = player.getPlayer().getWorld();
 				Location pLocation = player.getPlayer().getLocation();
-				for (ClaimChunk chunk : player.getTeam().getClaimedChunks()) {
+				for (ClaimChunk chunk : new ArrayList<>(player.getTeam().getClaimedChunks())) {
 					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
 					if (Math.sqrt(Math.pow(chunkX - pLocation.getBlockX(), 2) + Math.pow(chunkZ - pLocation.getBlockZ(), 2)) >= 60)
 						continue;
@@ -120,7 +123,14 @@ public class BorderCommand implements CommandExecutor {
 								final int add = face == DirectionFace.WEST || face == DirectionFace.SOUTH ? 16 : 0;
 								final int locX = (int) locs[0] + chunkX + add, locY = y, locZ = (int) locs[1] + chunkZ + add;
 
-								player.getPlayer().playEffect(new Location(world, locX, locY, locZ), borderEffect, 1);
+								if (spawnParticleMethod != null)
+									try {
+										spawnParticleMethod.invoke(player.getPlayer(), borderEffect, locX, locY, locZ, 1);
+									} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+										e.printStackTrace();
+									}
+								else
+									player.getPlayer().playEffect(new Location(world, locX, locY, locZ), (Effect) borderEffect, 1);
 							}
 						}
 					}

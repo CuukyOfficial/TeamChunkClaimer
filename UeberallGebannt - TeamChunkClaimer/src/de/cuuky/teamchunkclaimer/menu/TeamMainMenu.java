@@ -44,7 +44,7 @@ public class TeamMainMenu extends SuperInventory {
 
 	@Override
 	public boolean onOpen() {
-		linkItemTo(10, new ItemBuilder().playername(player.getTeam().getOwner().getName()).displayname("§5Mitgleider").buildSkull(), new Runnable() {
+		linkItemTo(10, new ItemBuilder().playername(player.getTeam().getOwner().getName()).displayname("§5Mitglieder").buildSkull(), new Runnable() {
 
 			@Override
 			public void run() {

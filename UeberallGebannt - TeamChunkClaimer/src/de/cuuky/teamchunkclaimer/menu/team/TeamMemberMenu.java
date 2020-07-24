@@ -24,6 +24,7 @@ public class TeamMemberMenu extends SuperInventory {
 		this.fillInventory = false;
 		this.setModifier = true;
 
+		this.claimer = player.getHandler().getClaimer();
 		this.player = player;
 
 		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);

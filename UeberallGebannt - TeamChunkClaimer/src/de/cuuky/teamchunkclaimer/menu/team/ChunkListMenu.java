@@ -16,6 +16,7 @@ import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
+import de.cuuky.teamchunkclaimer.menu.ChunkMapMenu;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
 
 public class ChunkListMenu extends SuperInventory {
@@ -61,11 +62,15 @@ public class ChunkListMenu extends SuperInventory {
 				break;
 
 			ClaimChunk chunk = chunks.get(start);
-			linkItemTo(i, new ItemBuilder().displayname("§7X§8: " + claimer.getColorCode() + chunk.getLocationX() + "§8, §7Z§8: " + claimer.getColorCode() + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "Klicke zum Entclaimen.").build(), new ItemClickHandler() {
+			linkItemTo(i, new ItemBuilder().displayname("§7X§8: " + claimer.getColorCode() + chunk.getLocationX() + "§8, §7Z§8: " + claimer.getColorCode() + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "§aLinksklick§7, um auf der Karte anzuzeigen", "§cRechtsklick§7, um zu entclaimen").build(), new ItemClickHandler() {
 
 				@Override
 				public void onItemClick(InventoryClickEvent event) {
-					player.getTeam().removeChunk(chunk);
+					if (event.isLeftClick()) {
+						close(true);
+						new ChunkMapMenu(claimer, opener, chunk.getChunk());
+					} else
+						player.getTeam().removeChunk(chunk);
 				}
 			});
 			start++;

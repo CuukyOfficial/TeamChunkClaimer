@@ -28,7 +28,7 @@ public class ChunkMapMenu extends SuperInventory {
 
 	private Chunk center;
 
-	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
+	public ChunkMapMenu(ChunkClaimer claimer, Player opener, Chunk center) {
 		super("§aChunks §8(" + DirectionFace.getFace(opener.getLocation().getYaw()).getIdentifier() + "§8)", opener, 54, false);
 		this.claimer = claimer;
 		this.face = DirectionFace.getFace(opener.getLocation().getYaw());
@@ -38,11 +38,15 @@ public class ChunkMapMenu extends SuperInventory {
 		this.chunkJumpHorizontal = 1;
 		this.chunkJumpVertical = 1;
 
-		this.center = this.opener.getLocation().getChunk();
+		this.center = center;
 		this.player = claimer.getEntityHandler().getPlayer(opener.getName());
 		this.claimer.getCuukyFrameWork().getInventoryManager().registerInventory(this);
 
 		open();
+	}
+
+	public ChunkMapMenu(ChunkClaimer claimer, Player opener) {
+		this(claimer, opener, opener.getLocation().getChunk());
 	}
 
 	private int[] getDirectionChange(boolean horizontal, boolean left) {
@@ -155,7 +159,7 @@ public class ChunkMapMenu extends SuperInventory {
 						updateInventory();
 					}
 				});
-				
+
 				linkItemTo(this.size - 3, new ItemBuilder().displayname("§7Horizontale Chunks pro §aKlick§7: §a" + this.chunkJumpHorizontal).lore("§aLinks §7= hoch", "§cRechts §7= runter").itemstack(Materials.COAL.parseItem()).build(), new ItemClickHandler() {
 
 					@Override

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -105,37 +104,8 @@ public class BorderCommand implements CommandExecutor {
 					ClaimChunk chunk = chunks.get(distance);
 					int yStart = player.getPlayer().getLocation().getBlockY() - 2, chunkX = chunk.getLocationX() - 8, chunkZ = chunk.getLocationZ() - 8;
 
-					List<DirectionFace> toRender = new ArrayList<DirectionFace>();
-					int possibleParticles = 0;
-					for (DirectionFace face : DirectionFace.values()) {
-						if (mode == 1) {
-							Chunk neighbour = null;
-							switch (face) {
-							case NORTH:
-								neighbour = world.getChunkAt(chunk.getChunkX(), chunk.getChunkZ() - 1);
-								break;
-							case WEST:
-								neighbour = world.getChunkAt(chunk.getChunkX() + 1, chunk.getChunkZ());
-								break;
-							case SOUTH:
-								neighbour = world.getChunkAt(chunk.getChunkX(), chunk.getChunkZ() + 1);
-								break;
-							case EAST:
-								neighbour = world.getChunkAt(chunk.getChunkX() - 1, chunk.getChunkZ());
-								break;
-							default:
-								break;
-							}
-
-							ClaimChunk claimed = instance.getEntityHandler().getChunk(neighbour);
-							if (claimed != null && claimed.getTeam().equals(player.getTeam()))
-								continue;
-						}
-
-						toRender.add(face);
-						possibleParticles += WALL_HEIGHT * WALL_WIDTH;
-					}
-
+					List<DirectionFace> toRender = chunk.getBorders(mode == 1);
+					int possibleParticles = (WALL_HEIGHT * WALL_WIDTH) * toRender.size();
 					if (particlesSent + possibleParticles >= MAX_PARTICLES)
 						return;
 					else

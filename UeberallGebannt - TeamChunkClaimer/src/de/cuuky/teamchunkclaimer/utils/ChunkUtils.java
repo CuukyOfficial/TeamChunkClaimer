@@ -16,5 +16,4 @@ public class ChunkUtils {
 		chunks.add(chunk.getWorld().getChunkAt(chunkX, chunkZ - 1));
 		return chunks;
 	}
-
 }

@@ -17,6 +17,9 @@ public class TeamChatListener implements Listener {
 
 	@EventHandler
 	public void onASyncChat(AsyncPlayerChatEvent event) {
+		if (event.isCancelled())
+			return;
+
 		if (!event.getMessage().startsWith("#"))
 			return;
 

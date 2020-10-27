@@ -36,11 +36,11 @@ public class ChunkCommand implements CommandExecutor {
 
 		if (args.length == 0) {
 			sender.sendMessage(claimer.getConfiguration().getHeader());
-			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk map §8- §7Öffnet eine Karte der Umgebung mit allen geclaimten Chunks");
-			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk info [x] [z] §8- §7Zeigt Infos zu dem Chunk auf dem du stehst");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk map §8- §7Öffnet die Chunkkarte");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk info [x] [z] §8- §7Zeigt Infos zu einem Chunk");
 			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk claim [x] [z] §8- §7Claimt den Chunk für das Team");
 			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk unclaim [x] [z] §8- §7Entclaimt den Chunk vom Team");
-			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk list §8- §7Öffnet ein GUI mit allen Chunks deines Teams");
+			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk list §8- §7Zeigt alle Chunks deines Teams an");
 			sender.sendMessage(claimer.getPrefix() + claimer.getColorCode() + "/chunk flag <pvp/use/build> <true/false> §8- §7Öffnet ein GUI zum Einstellen der Flags");
 			sender.sendMessage(claimer.getConfiguration().getHeader());
 			return true;

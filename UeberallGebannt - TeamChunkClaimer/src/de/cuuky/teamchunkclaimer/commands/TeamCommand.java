@@ -356,6 +356,10 @@ public class TeamCommand implements CommandExecutor {
 		}
 
 		if (args[0].equalsIgnoreCase("delete")) {
+			if (player.getTeam() == null) {
+				sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+				return false;
+			}
 			if (player.getTeam().getMemberType(player) != TeamMemberType.OWNER) {
 				sender.sendMessage(claimer.getPrefix() + "Du musst Team-Owner sein, um diese Einstellung vornehmen zu können!");
 				return false;

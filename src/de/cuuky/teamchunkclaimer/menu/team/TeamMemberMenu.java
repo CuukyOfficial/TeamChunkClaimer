@@ -48,21 +48,4 @@ public class TeamMemberMenu extends AdvancedListInventory<ChunkPlayer> {
 	protected ItemClick getClick(ChunkPlayer chunkPlayer) {
 		return null;
 	}
-
-//	@Override
-//	public boolean onOpen() {
-//		List<ChunkPlayer> members = player.getTeam().getMembers().keySet().stream().collect(Collectors.toList());
-//
-//		int start = getSize() * (getPage() - 1);
-//		for (int i = 0; i != getSize(); i++) {
-//			if (start >= members.size())
-//				break;
-//
-//			ChunkPlayer member = members.get(start);
-//			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString()).buildSkull());
-//			start++;
-//		}
-//
-//		return calculatePages(members.size(), getSize()) == page;
-//	}
 }

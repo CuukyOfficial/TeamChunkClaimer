@@ -56,7 +56,7 @@ public class GeneralOptionsMenu extends ChunkClaimerMenu {
 
     @Override
     protected void refreshContent() {
-        ItemBuilder builder = new ItemBuilder().itemstack(Materials.BOOK.parseItem());
+        ItemBuilder builder = new ItemBuilder().material(Materials.BOOK.parseMaterial());
         ChunkTeam team = player.getTeam();
         this.addItem(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(),
                 this.getClick("§7Neuen Teamnamen eingeben", "team rename %s"));
@@ -76,93 +76,4 @@ public class GeneralOptionsMenu extends ChunkClaimerMenu {
                 .build(),
                 this.getClick("§7Neue Teamfarbe eingeben:", "team setcolor %s"));
     }
-
-//    @Override
-//    public boolean onOpen() {
-//
-//        ChunkTeam team = player.getTeam();
-//        HookManager hook = team.getHandler().getClaimer().getCuukyFrameWork().getHookManager();
-//
-//        linkItemTo(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(), new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                close(false);
-//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Teamnamen eingeben:", new ChatHookHandler() {
-//
-//                    @Override
-//                    public boolean onChat(PlayerChatEvent event) {
-//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team rename " + event.getMessage())) {
-//                            reopenSoon();
-//                            return true;
-//                        }
-//
-//                        return false;
-//                    }
-//                }));
-//            }
-//        });
-//
-//        linkItemTo(12, builder.displayname("§2Tag").lore("§7Wert§8: §f" + (team.getTag() == null ? "-" : team.getTag())).build(), new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                close(false);
-//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Tag eingeben:", new ChatHookHandler() {
-//
-//                    @Override
-//                    public boolean onChat(PlayerChatEvent event) {
-//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settag " + event.getMessage())) {
-//                            reopenSoon();
-//                            return true;
-//                        }
-//
-//                        return false;
-//                    }
-//                }));
-//            }
-//        });
-//
-//        linkItemTo(13, builder.displayname("§2Title").lore("§7Wert§8: §f" + (team.getTitle() == null ? "-" : team.getTitle())).build(), new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                close(false);
-//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Title eingeben:", new ChatHookHandler() {
-//
-//                    @Override
-//                    public boolean onChat(PlayerChatEvent event) {
-//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settitle " + event.getMessage())) {
-//                            reopenSoon();
-//                            return true;
-//                        }
-//
-//                        return false;
-//                    }
-//                }));
-//            }
-//        });
-//
-//        linkItemTo(14, builder.displayname("§2Color").lore("§7Wert§8: §f" + team.getDisplayname()).build(), new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                close(false);
-//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neue Teamfarbe eingeben:", new ChatHookHandler() {
-//
-//                    @Override
-//                    public boolean onChat(PlayerChatEvent event) {
-//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team setcolor " + event.getMessage())) {
-//                            reopenSoon();
-//                            return true;
-//                        }
-//
-//                        return false;
-//                    }
-//                }));
-//            }
-//        });
-//
-//        return true;
-//    }
 }

@@ -63,32 +63,4 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
                 player.getTeam().removeChunk(chunk);
         };
     }
-
-//    @Override
-//    public boolean onOpen() {
-//        List<ClaimChunk> chunks = player.getTeam().getClaimedChunks();
-//        Collections.reverse(chunks);
-//
-//        int start = getSize() * (getPage() - 1);
-//        for (int i = 0; i != getSize(); i++) {
-//            if (start >= chunks.size())
-//                break;
-//
-//            ClaimChunk chunk = chunks.get(start);
-//            linkItemTo(i, new ItemBuilder().displayname("§7X§8: " + claimer.getColorCode() + chunk.getLocationX() + "§8, §7Z§8: " + claimer.getColorCode() + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("HH:mm:ss dd.MM.YYYY").format(chunk.getClaimedAt()), "", "§aLinksklick§7, um auf der Karte anzuzeigen", "§cRechtsklick§7, um zu entclaimen").build(), new ItemClickHandler() {
-//
-//                @Override
-//                public void onItemClick(InventoryClickEvent event) {
-//                    if (event.isLeftClick()) {
-//                        close(true);
-//                        new ChunkMapMenu(claimer, opener, chunk.getChunk());
-//                    } else
-//                        player.getTeam().removeChunk(chunk);
-//                }
-//            });
-//            start++;
-//        }
-//
-//        return calculatePages(chunks.size(), getSize()) == page;
-//    }
 }

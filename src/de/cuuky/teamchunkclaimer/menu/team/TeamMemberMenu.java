@@ -1,65 +1,68 @@
 package de.cuuky.teamchunkclaimer.menu.team;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.list.AdvancedListInventory;
 import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.menu.SuperInventory;
-import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
-import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
+import org.bukkit.inventory.ItemStack;
 
-public class TeamMemberMenu extends SuperInventory {
+import java.util.ArrayList;
+import java.util.List;
 
-	private ChunkClaimer claimer;
-	private ChunkPlayer player;
+public class TeamMemberMenu extends AdvancedListInventory<ChunkPlayer> {
+
+	private final ChunkClaimer claimer;
+	private final ChunkPlayer player;
 
 	public TeamMemberMenu(ChunkPlayer player) {
-		super("§7Member " + player.getTeam().getDisplayname(), player.getPlayer(), 54, false);
-
-		this.fillInventory = false;
-		this.setModifier = true;
+		super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer(), 54);
 
 		this.claimer = player.getHandler().getClaimer();
 		this.player = player;
-
-		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
-		open();
 	}
 
 	@Override
-	public boolean onBackClick() {
-		new TeamMainMenu(player);
-		return true;
+	protected ItemStack getFillerStack() {
+		return null;
 	}
 
 	@Override
-	public void onClick(InventoryClickEvent event) {}
-
-	@Override
-	public void onClose(InventoryCloseEvent event) {}
-
-	@Override
-	public void onInventoryAction(PageAction action) {}
-
-	@Override
-	public boolean onOpen() {
-		List<ChunkPlayer> members = player.getTeam().getMembers().keySet().stream().collect(Collectors.toList());
-
-		int start = getSize() * (getPage() - 1);
-		for (int i = 0; i != getSize(); i++) {
-			if (start >= members.size())
-				break;
-
-			ChunkPlayer member = members.get(start);
-			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString()).buildSkull());
-			start++;
-		}
-
-		return calculatePages(members.size(), getSize()) == page;
+	public String getTitle() {
+		return "§7Member " + player.getTeam().getDisplayname();
 	}
+
+	@Override
+	protected List<ChunkPlayer> getList() {
+		return new ArrayList<>(player.getTeam().getMembers().keySet());
+	}
+
+	@Override
+	protected ItemStack getItemStack(ChunkPlayer member) {
+		return new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName())
+				.lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString())
+				.buildSkull();
+	}
+
+	@Override
+	protected ItemClick getClick(ChunkPlayer chunkPlayer) {
+		return null;
+	}
+
+//	@Override
+//	public boolean onOpen() {
+//		List<ChunkPlayer> members = player.getTeam().getMembers().keySet().stream().collect(Collectors.toList());
+//
+//		int start = getSize() * (getPage() - 1);
+//		for (int i = 0; i != getSize(); i++) {
+//			if (start >= members.size())
+//				break;
+//
+//			ChunkPlayer member = members.get(start);
+//			linkItemTo(i, new ItemBuilder().playername(member.getName()).displayname("§7" + member.getName()).lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString()).buildSkull());
+//			start++;
+//		}
+//
+//		return calculatePages(members.size(), getSize()) == page;
+//	}
 }

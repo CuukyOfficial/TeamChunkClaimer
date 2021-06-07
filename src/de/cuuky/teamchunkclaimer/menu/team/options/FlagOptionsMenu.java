@@ -1,59 +1,46 @@
 package de.cuuky.teamchunkclaimer.menu.team.options;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-
+import de.cuuky.cfw.inventory.ItemInserter;
+import de.cuuky.cfw.inventory.inserter.DirectInserter;
 import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.menu.SuperInventory;
-import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ChunkFlag;
-import de.cuuky.teamchunkclaimer.menu.team.TeamOptionsMenu;
+import de.cuuky.teamchunkclaimer.menu.ChunkClaimerMenu;
 
-public class FlagOptionsMenu extends SuperInventory {
+public class FlagOptionsMenu extends ChunkClaimerMenu {
 
-	private ChunkPlayer player;
+    private final ChunkPlayer player;
 
-	public FlagOptionsMenu(ChunkPlayer player) {
-		super("§7Flags", player.getPlayer(), 27, false);
+    public FlagOptionsMenu(ChunkPlayer player) {
+        super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer());
 
-		this.setModifier = true;
+        this.player = player;
+    }
 
-		this.player = player;
+    @Override
+    protected String getTitle() {
+        return "§7Flags";
+    }
 
-		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
-		open();
-	}
+    @Override
+    public int getSize() {
+        return 27;
+    }
 
-	@Override
-	public boolean onBackClick() {
-		new TeamOptionsMenu(player);
-		return true;
-	}
+    @Override
+    protected void refreshContent() {
+        int start = 11;
+        for (ChunkFlag flag : ChunkFlag.values()) {
+            addItem(start, new ItemBuilder().displayname((player.getTeam().getFlag(flag) ? "§2" : "§c") + flag.getName())
+                            .lore("§aBeschreibung§8: §7" + flag.getDescription(), "§7Aktiviert§8: " + (player.getTeam().getFlag(flag) ? "§2Ja" : "§cNein"))
+                            .itemstack(flag.getMaterial().parseItem()).build(),
+                    e -> {
+                        player.getTeam().setFlag(flag, !player.getTeam().getFlag(flag));
+                        this.updateOthers(inv ->
+                                inv instanceof FlagOptionsMenu && ((FlagOptionsMenu) inv).player.equals(player));
+                    });
 
-	@Override
-	public void onClick(InventoryClickEvent event) {}
-
-	@Override
-	public void onClose(InventoryCloseEvent event) {}
-
-	@Override
-	public void onInventoryAction(PageAction action) {}
-
-	@Override
-	public boolean onOpen() {
-		int start = 11;
-		for (ChunkFlag flag : ChunkFlag.values()) {
-			linkItemTo(start, new ItemBuilder().displayname((player.getTeam().getFlag(flag) ? "§2" : "§c") + flag.getName()).lore("§aBeschreibung§8: §7" + flag.getDescription(), "§7Aktiviert§8: " + (player.getTeam().getFlag(flag) ? "§2Ja" : "§cNein")).itemstack(flag.getMaterial().parseItem()).build(), new Runnable() {
-
-				@Override
-				public void run() {
-					player.getTeam().setFlag(flag, !player.getTeam().getFlag(flag));
-				}
-			});
-
-			start += 2;
-		}
-		return true;
-	}
+            start += 2;
+        }
+    }
 }

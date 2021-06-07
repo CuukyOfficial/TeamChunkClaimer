@@ -1,65 +1,40 @@
 package de.cuuky.teamchunkclaimer.menu.team;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-
 import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.menu.SuperInventory;
-import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
-import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
+import de.cuuky.teamchunkclaimer.menu.ChunkClaimerMenu;
 import de.cuuky.teamchunkclaimer.menu.team.options.FlagOptionsMenu;
 import de.cuuky.teamchunkclaimer.menu.team.options.GeneralOptionsMenu;
 
-public class TeamOptionsMenu extends SuperInventory {
+public class TeamOptionsMenu extends ChunkClaimerMenu {
 
-	private ChunkPlayer player;
+	private final ChunkPlayer player;
 
 	public TeamOptionsMenu(ChunkPlayer player) {
-		super("§7Einstellungsmenü", player.getPlayer(), 27, false);
-
-		this.setModifier = true;
-		this.fillInventory = true;
+		super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer());
 
 		this.player = player;
-
-		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
-		open();
 	}
 
 	@Override
-	public boolean onBackClick() {
-		new TeamMainMenu(player);
-		return true;
+	public String getTitle() {
+		return "§7Einstellungsmenü";
 	}
 
 	@Override
-	public void onClick(InventoryClickEvent event) {}
+	public int getSize() {
+		return 27;
+	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {}
+	protected void refreshContent() {
+		this.addItem(11, new ItemBuilder().displayname("§aGenerelle Einstellungen")
+				.itemstack(Materials.SIGN.parseItem())
+				.build(), (e) -> this.openNext(new GeneralOptionsMenu(player)));
 
-	@Override
-	public void onInventoryAction(PageAction action) {}
-
-	@Override
-	public boolean onOpen() {
-		linkItemTo(11, new ItemBuilder().displayname("§aGenerelle Einstellungen").itemstack(Materials.SIGN.parseItem()).build(), new Runnable() {
-
-			@Override
-			public void run() {
-				new GeneralOptionsMenu(player);
-			}
-		});
-
-		linkItemTo(15, new ItemBuilder().displayname("§5Flags").itemstack(Materials.NAME_TAG.parseItem()).build(), new Runnable() {
-
-			@Override
-			public void run() {
-				new FlagOptionsMenu(player);
-			}
-		});
-		return true;
+		this.addItem(15,new ItemBuilder().displayname("§5Flags")
+				.itemstack(Materials.NAME_TAG.parseItem())
+				.build(), (e) -> this.openNext(new FlagOptionsMenu(player)));
 	}
 }

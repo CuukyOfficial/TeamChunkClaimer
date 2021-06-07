@@ -1,138 +1,168 @@
 package de.cuuky.teamchunkclaimer.menu.team.options;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerChatEvent;
-
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
+import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.menu.SuperInventory;
-import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
-import de.cuuky.teamchunkclaimer.menu.team.TeamOptionsMenu;
+import de.cuuky.teamchunkclaimer.menu.ChunkClaimerMenu;
+import org.bukkit.event.player.PlayerChatEvent;
 
-@SuppressWarnings("deprecation")
-public class GeneralOptionsMenu extends SuperInventory {
+public class GeneralOptionsMenu extends ChunkClaimerMenu {
 
-	private ChunkPlayer player;
+    private final ChunkPlayer player;
 
-	public GeneralOptionsMenu(ChunkPlayer player) {
-		super("§7Einstellungen", player.getPlayer(), 27, false);
+    public GeneralOptionsMenu(ChunkPlayer player) {
+        super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer());
 
-		this.fillInventory = true;
-		this.setModifier = true;
+        this.player = player;
+    }
 
-		this.player = player;
+    private ItemClick getClick(String msg, String command) {
+        ChunkTeam team = player.getTeam();
+        HookManager hook = team.getHandler().getClaimer().getCuukyFrameWork().getHookManager();
 
-		player.getHandler().getClaimer().getCuukyFrameWork().getInventoryManager().registerInventory(this);
-		open();
-	}
+        return (event) -> {
+            this.close();
+            hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + msg
+                    , new ChatHookHandler() {
 
-	@Override
-	public boolean onBackClick() {
-		new TeamOptionsMenu(player);
-		return true;
-	}
+                @Override
+                public boolean onChat(PlayerChatEvent event) {
+                    if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(),
+                            String.format(command, event.getMessage()))) {
+                        open();
+                        return true;
+                    }
 
-	@Override
-	public void onClick(InventoryClickEvent event) {}
+                    return false;
+                }
+            }));
+        };
+    }
 
-	@Override
-	public void onClose(InventoryCloseEvent event) {}
+    @Override
+    protected String getTitle() {
+        return "§7Einstellungen";
+    }
 
-	@Override
-	public void onInventoryAction(PageAction action) {}
+    @Override
+    public int getSize() {
+        return 27;
+    }
 
-	@Override
-	public boolean onOpen() {
-		ItemBuilder builder = new ItemBuilder().itemstack(Materials.BOOK.parseItem());
-		ChunkTeam team = player.getTeam();
-		HookManager hook = team.getHandler().getClaimer().getCuukyFrameWork().getHookManager();
+    @Override
+    protected void refreshContent() {
+        ItemBuilder builder = new ItemBuilder().itemstack(Materials.BOOK.parseItem());
+        ChunkTeam team = player.getTeam();
+        this.addItem(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(),
+                this.getClick("§7Neuen Teamnamen eingeben", "team rename %s"));
 
-		linkItemTo(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(), new Runnable() {
+        this.addItem(12, builder.displayname("§2Tag").lore("§7Wert§8: §f" + (team.getTag() == null ? "-" : team.getTag()))
+                        .lore("§7Wert§8: §f" + (team.getTag() == null ? "-" : team.getTag()))
+                        .build(),
+                this.getClick("§7Neuen Tag eingeben:", "team settag %s"));
 
-			@Override
-			public void run() {
-				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Teamnamen eingeben:", new ChatHookHandler() {
+        this.addItem(13, builder.displayname("§2Title").lore("§7Wert§8: §f" + (team.getTitle() == null ? "-" : team.getTitle()))
+                .lore("§7Wert§8: §f" + (team.getTitle() == null ? "-" : team.getTitle()))
+                .build(),
+                this.getClick("§7Neuen Title eingeben:", "team settitle %s"));
 
-					@Override
-					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team rename " + event.getMessage())) {
-							reopenSoon();
-							return true;
-						}
+        this.addItem(14, builder.displayname("§2Color").lore("§7Wert§8: §f" + team.getDisplayname())
+                .lore("§7Wert§8: §f" + team.getDisplayname())
+                .build(),
+                this.getClick("§7Neue Teamfarbe eingeben:", "team setcolor %s"));
+    }
 
-						return false;
-					}
-				}));
-			}
-		});
-
-		linkItemTo(12, builder.displayname("§2Tag").lore("§7Wert§8: §f" + (team.getTag() == null ? "-" : team.getTag())).build(), new Runnable() {
-
-			@Override
-			public void run() {
-				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Tag eingeben:", new ChatHookHandler() {
-
-					@Override
-					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settag " + event.getMessage())) {
-							reopenSoon();
-							return true;
-						}
-
-						return false;
-					}
-				}));
-			}
-		});
-
-		linkItemTo(13, builder.displayname("§2Title").lore("§7Wert§8: §f" + (team.getTitle() == null ? "-" : team.getTitle())).build(), new Runnable() {
-
-			@Override
-			public void run() {
-				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Title eingeben:", new ChatHookHandler() {
-
-					@Override
-					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settitle " + event.getMessage())) {
-							reopenSoon();
-							return true;
-						}
-
-						return false;
-					}
-				}));
-			}
-		});
-
-		linkItemTo(14, builder.displayname("§2Color").lore("§7Wert§8: §f" + team.getDisplayname()).build(), new Runnable() {
-
-			@Override
-			public void run() {
-				close(false);
-				hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neue Teamfarbe eingeben:", new ChatHookHandler() {
-
-					@Override
-					public boolean onChat(PlayerChatEvent event) {
-						if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team setcolor " + event.getMessage())) {
-							reopenSoon();
-							return true;
-						}
-
-						return false;
-					}
-				}));
-			}
-		});
-
-		return true;
-	}
+//    @Override
+//    public boolean onOpen() {
+//
+//        ChunkTeam team = player.getTeam();
+//        HookManager hook = team.getHandler().getClaimer().getCuukyFrameWork().getHookManager();
+//
+//        linkItemTo(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(), new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                close(false);
+//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Teamnamen eingeben:", new ChatHookHandler() {
+//
+//                    @Override
+//                    public boolean onChat(PlayerChatEvent event) {
+//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team rename " + event.getMessage())) {
+//                            reopenSoon();
+//                            return true;
+//                        }
+//
+//                        return false;
+//                    }
+//                }));
+//            }
+//        });
+//
+//        linkItemTo(12, builder.displayname("§2Tag").lore("§7Wert§8: §f" + (team.getTag() == null ? "-" : team.getTag())).build(), new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                close(false);
+//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Tag eingeben:", new ChatHookHandler() {
+//
+//                    @Override
+//                    public boolean onChat(PlayerChatEvent event) {
+//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settag " + event.getMessage())) {
+//                            reopenSoon();
+//                            return true;
+//                        }
+//
+//                        return false;
+//                    }
+//                }));
+//            }
+//        });
+//
+//        linkItemTo(13, builder.displayname("§2Title").lore("§7Wert§8: §f" + (team.getTitle() == null ? "-" : team.getTitle())).build(), new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                close(false);
+//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neuen Title eingeben:", new ChatHookHandler() {
+//
+//                    @Override
+//                    public boolean onChat(PlayerChatEvent event) {
+//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team settitle " + event.getMessage())) {
+//                            reopenSoon();
+//                            return true;
+//                        }
+//
+//                        return false;
+//                    }
+//                }));
+//            }
+//        });
+//
+//        linkItemTo(14, builder.displayname("§2Color").lore("§7Wert§8: §f" + team.getDisplayname()).build(), new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                close(false);
+//                hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + "§7Neue Teamfarbe eingeben:", new ChatHookHandler() {
+//
+//                    @Override
+//                    public boolean onChat(PlayerChatEvent event) {
+//                        if (!team.getHandler().getClaimer().getPlugin().getServer().dispatchCommand(player.getPlayer(), "team setcolor " + event.getMessage())) {
+//                            reopenSoon();
+//                            return true;
+//                        }
+//
+//                        return false;
+//                    }
+//                }));
+//            }
+//        });
+//
+//        return true;
+//    }
 }

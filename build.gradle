@@ -1,0 +1,79 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'UTF-8'
+libsDirName = System.getenv("libsDirName") == null ? libsDirName : System.getenv("libsDirName")
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+
+        resources {
+            srcDirs 'resources'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+
+    flatDir {
+        dirs 'libs'
+    }
+
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+configurations {
+    internalLibs
+}
+
+dependencies {
+    this.addModularCompile('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT', 'spigot', false)
+    
+    this.addModularCompile('com.github.CuukyOfficial:CFW:master-SNAPSHOT', 'CFW - Cuuky FrameWork', true)
+
+    compileOnly configurations.internalLibs
+}
+
+boolean checkLib(String filePath) {
+    return file('libs/' + filePath + '.jar').exists();
+}
+
+void addModularCompile(String repoName, String fileName, boolean changingB) {
+    if (this.checkLib(fileName))
+        this.dependencies.compileOnly name: fileName
+    else
+        this.dependencies.compileOnly (repoName) { changing = changingB }
+}
+
+void addModularInternal(String repoName, String fileName, boolean changingB) {
+    if (this.checkLib(fileName))
+        this.dependencies.internalLibs name: fileName
+    else
+        this.dependencies.internalLibs (repoName) { changing = changingB }
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.internalLibs.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}

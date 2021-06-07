@@ -32,3 +32,8 @@ hs_err_pid*
 .classpath
 /.settings/
 **.class
+
+/target/
+/libs/
+.gradle
+build

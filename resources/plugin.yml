@@ -1,6 +1,6 @@
 name: TeamChunkClaimer
 author: Cuuky
-version: 0.1.2
+version: 0.2
 softdepend: [CuukyFrameWork]
 main: de.cuuky.teamchunkclaimer.Main
 

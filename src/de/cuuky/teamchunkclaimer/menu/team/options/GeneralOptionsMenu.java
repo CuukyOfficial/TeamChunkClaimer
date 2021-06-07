@@ -27,8 +27,8 @@ public class GeneralOptionsMenu extends ChunkClaimerMenu {
 
         return (event) -> {
             this.close();
-            hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + msg
-                    , new ChatHookHandler() {
+            hook.registerHook(new ChatHook(player.getPlayer(), team.getHandler().getClaimer().getPrefix() + msg,
+                    new ChatHookHandler() {
 
                 @Override
                 public boolean onChat(PlayerChatEvent event) {

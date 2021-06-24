@@ -18,7 +18,7 @@ public class FlagOptionsMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return "§7Flags";
     }
 
@@ -28,7 +28,7 @@ public class FlagOptionsMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected void refreshContent() {
+    public void refreshContent() {
         int start = 11;
         for (ChunkFlag flag : ChunkFlag.values()) {
             addItem(start, new ItemBuilder().displayname((player.getTeam().getFlag(flag) ? "§2" : "§c") + flag.getName())

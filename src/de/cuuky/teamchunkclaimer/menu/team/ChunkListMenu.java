@@ -21,22 +21,10 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
     private final ChunkClaimer claimer;
 
     public ChunkListMenu(ChunkPlayer player) {
-        super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer(), 54);
+        super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer());
 
         this.claimer = player.getHandler().getClaimer();
         this.player = player;
-    }
-
-    @Override
-    protected List<ClaimChunk> getList() {
-        List<ClaimChunk> chunks = new ArrayList<>(player.getTeam().getClaimedChunks());
-        Collections.reverse(chunks);
-        return chunks;
-    }
-
-    @Override
-    protected String getTitle() {
-        return "§7Chunks " + player.getTeam().getDisplayname();
     }
 
     @Override
@@ -62,5 +50,22 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
             else
                 player.getTeam().removeChunk(chunk);
         };
+    }
+
+    @Override
+    public int getSize() {
+        return 54;
+    }
+
+    @Override
+    public List<ClaimChunk> getList() {
+        List<ClaimChunk> chunks = new ArrayList<>(player.getTeam().getClaimedChunks());
+        Collections.reverse(chunks);
+        return chunks;
+    }
+
+    @Override
+    public String getTitle() {
+        return "§7Chunks " + player.getTeam().getDisplayname();
     }
 }

@@ -45,7 +45,7 @@ public class GeneralOptionsMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return "§7Einstellungen";
     }
 
@@ -55,7 +55,7 @@ public class GeneralOptionsMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected void refreshContent() {
+    public void refreshContent() {
         ItemBuilder builder = new ItemBuilder().material(Materials.BOOK.parseMaterial());
         ChunkTeam team = player.getTeam();
         this.addItem(11, builder.displayname("§2Name").lore("§7Wert§8: §f" + team.getName()).build(),

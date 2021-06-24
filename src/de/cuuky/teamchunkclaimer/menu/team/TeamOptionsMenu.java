@@ -28,7 +28,7 @@ public class TeamOptionsMenu extends ChunkClaimerMenu {
 	}
 
 	@Override
-	protected void refreshContent() {
+	public void refreshContent() {
 		this.addItem(11, new ItemBuilder().displayname("§aGenerelle Einstellungen")
 				.itemstack(Materials.SIGN.parseItem())
 				.build(), (e) -> this.openNext(new GeneralOptionsMenu(player)));

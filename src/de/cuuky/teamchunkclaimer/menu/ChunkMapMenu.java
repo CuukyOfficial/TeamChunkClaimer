@@ -78,16 +78,6 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected String getTitle() {
-        return "§aChunks §8(" + this.face.getIdentifier() + "§8)";
-    }
-
-    @Override
-    public int getSize() {
-        return 54;
-    }
-
-    @Override
     protected ItemInfo getBackInfo() {
         ItemInfo closeInfo = super.getCloseInfo();
         return super.getPrevious() != null ? super.getBackInfo().setIndex(closeInfo.getIndex()) : null;
@@ -99,7 +89,17 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected void refreshContent() {
+    public String getTitle() {
+        return "§aChunks §8(" + this.face.getIdentifier() + "§8)";
+    }
+
+    @Override
+    public int getSize() {
+        return 54;
+    }
+
+    @Override
+    public void refreshContent() {
         double height = (this.getUsableSize() / 9) / 2, width = 4;
 
         for (double y = height * -1; y <= height; y++) {

@@ -20,12 +20,12 @@ public class TeamMainMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return "§7Team " + player.getTeam().getDisplayname();
     }
 
     @Override
-    protected void refreshContent() {
+    public void refreshContent() {
         this.addItem(10, new ItemBuilder().playername(player.getTeam().getOwner().getName()).displayname("§5Mitglieder").buildSkull(),
                 e -> this.openNext(new TeamMemberMenu(player)));
 

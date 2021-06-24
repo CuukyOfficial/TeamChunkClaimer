@@ -16,25 +16,20 @@ public class TeamMemberMenu extends AdvancedListInventory<ChunkPlayer> {
 	private final ChunkPlayer player;
 
 	public TeamMemberMenu(ChunkPlayer player) {
-		super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer(), 54);
+		super(player.getHandler().getClaimer().getCuukyFrameWork().getAdvancedInventoryManager(), player.getPlayer());
 
 		this.claimer = player.getHandler().getClaimer();
 		this.player = player;
 	}
 
 	@Override
+	public int getSize() {
+		return 54;
+	}
+
+	@Override
 	protected ItemStack getFillerStack() {
 		return null;
-	}
-
-	@Override
-	public String getTitle() {
-		return "§7Member " + player.getTeam().getDisplayname();
-	}
-
-	@Override
-	protected List<ChunkPlayer> getList() {
-		return new ArrayList<>(player.getTeam().getMembers().keySet());
 	}
 
 	@Override
@@ -47,5 +42,15 @@ public class TeamMemberMenu extends AdvancedListInventory<ChunkPlayer> {
 	@Override
 	protected ItemClick getClick(ChunkPlayer chunkPlayer) {
 		return null;
+	}
+
+	@Override
+	public String getTitle() {
+		return "§7Member " + player.getTeam().getDisplayname();
+	}
+
+	@Override
+	public List<ChunkPlayer> getList() {
+		return new ArrayList<>(player.getTeam().getMembers().keySet());
 	}
 }

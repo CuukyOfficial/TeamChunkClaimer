@@ -63,10 +63,10 @@ public class ChunkEntityHandler {
 						if (oldChunk != null && oldChunk.getTeam().equals(newChunk.getTeam()))
 							continue;
 
-                        VersionUtils.getVersionAdapter().sendTablist(player.getPlayer(),
+                        VersionUtils.getVersionAdapter().sendTitle(player.getPlayer(),
                             newChunk.getTeam().getDisplayname(), newChunk.getTeam().getTitle() != null ? newChunk.getTeam().getTitle() : "");
 					} else if (oldChunk != null)
-                        VersionUtils.getVersionAdapter().sendTablist(player.getPlayer(),
+                        VersionUtils.getVersionAdapter().sendTitle(player.getPlayer(),
                             "§aWildnis", "§7Hier kannst du Chunks claimen.");
 
 					lastChunks.put(player, newChunk);

@@ -1,31 +1,31 @@
 package de.cuuky.teamchunkclaimer.entity;
 
+import de.cuuky.cfw.serialize.CFWSerializeManager;
+import de.cuuky.cfw.serialize.CFWSerializeManager.SaveVisit;
+import de.cuuky.cfw.version.VersionUtils;
+import de.cuuky.teamchunkclaimer.ChunkClaimer;
+import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
+import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
+import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
+import org.bukkit.Chunk;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Chunk;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import de.cuuky.cfw.serialize.CFWSerializeManager;
-import de.cuuky.cfw.serialize.CFWSerializeManager.SaveVisit;
-import de.cuuky.teamchunkclaimer.ChunkClaimer;
-import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
-import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
-import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
-
 public class ChunkEntityHandler {
 
 	private final String BASE_DIR = "plugins/TeamChunkClaimer/stats/";
 
-	private ChunkClaimer claimer;
-	private CFWSerializeManager serializeManager;
+	private final ChunkClaimer claimer;
+	private final CFWSerializeManager serializeManager;
 
-	private List<ChunkPlayer> players;
-	private List<ChunkTeam> teams;
+	private final List<ChunkPlayer> players;
+	private final List<ChunkTeam> teams;
 
 	public ChunkEntityHandler(ChunkClaimer claimer) {
 		this.claimer = claimer;
@@ -48,7 +48,7 @@ public class ChunkEntityHandler {
 	private void startChunkThread() {
 		new BukkitRunnable() {
 
-			Map<ChunkPlayer, ClaimChunk> lastChunks = new HashMap<ChunkPlayer, ClaimChunk>();
+			final Map<ChunkPlayer, ClaimChunk> lastChunks = new HashMap<>();
 
 			@Override
 			public void run() {
@@ -63,9 +63,11 @@ public class ChunkEntityHandler {
 						if (oldChunk != null && oldChunk.getTeam().equals(newChunk.getTeam()))
 							continue;
 
-						player.getNetworkManager().sendTitle(newChunk.getTeam().getDisplayname(), newChunk.getTeam().getTitle() != null ? newChunk.getTeam().getTitle() : "");
+                        VersionUtils.getVersionAdapter().sendTablist(player.getPlayer(),
+                            newChunk.getTeam().getDisplayname(), newChunk.getTeam().getTitle() != null ? newChunk.getTeam().getTitle() : "");
 					} else if (oldChunk != null)
-						player.getNetworkManager().sendTitle("§aWildnis", "§7Hier kannst du Chunks claimen.");
+                        VersionUtils.getVersionAdapter().sendTablist(player.getPlayer(),
+                            "§aWildnis", "§7Hier kannst du Chunks claimen.");
 
 					lastChunks.put(player, newChunk);
 				}
@@ -121,11 +123,7 @@ public class ChunkEntityHandler {
 		return player;
 	}
 
-	public List<ChunkPlayer> getPlayers() {
-		return players;
-	}
-
-	public ChunkTeam getTeam(long id) {
+    public ChunkTeam getTeam(long id) {
 		for (ChunkTeam team : this.teams)
 			if (team.getTeamId() == id)
 				return team;

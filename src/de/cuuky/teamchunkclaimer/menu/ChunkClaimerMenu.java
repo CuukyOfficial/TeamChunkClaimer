@@ -13,7 +13,7 @@ public abstract class ChunkClaimerMenu extends AdvancedInventory {
     }
 
     @Override
-    protected ItemInserter getInserter() {
+    public ItemInserter getInserter() {
         return new AnimatedClosingInserter();
     }
 }

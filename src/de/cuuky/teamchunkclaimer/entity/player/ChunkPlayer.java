@@ -1,21 +1,19 @@
 package de.cuuky.teamchunkclaimer.entity.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-
-import de.cuuky.cfw.player.connection.NetworkManager;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeField;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
 import de.cuuky.teamchunkclaimer.entity.player.invites.TeamInvite;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChunkPlayer implements CFWSerializeable {
 
-	private ChunkEntityHandler handler;
+	private final ChunkEntityHandler handler;
 
 	@CFWSerializeField(path = "uuid")
 	private String uuid;
@@ -31,12 +29,11 @@ public class ChunkPlayer implements CFWSerializeable {
 
 	private ChunkTeam team;
 	private Player player;
-	private NetworkManager networkManager;
 
 	public ChunkPlayer(ChunkEntityHandler handler) {
 		this.handler = handler;
 
-		this.invites = new ArrayList<TeamInvite>();
+		this.invites = new ArrayList<>();
 	}
 
 	public ChunkPlayer(ChunkEntityHandler handler, String uuid) {
@@ -56,7 +53,7 @@ public class ChunkPlayer implements CFWSerializeable {
 			if (!info.getValue() || !info.getPermission().startsWith("chunk.limit."))
 				continue;
 
-			int tempAllowed = 0;
+			int tempAllowed;
 			try {
 				tempAllowed = Integer.parseInt(info.getPermission().replace("chunk.limit.", ""));
 			} catch (NumberFormatException e) {
@@ -98,15 +95,13 @@ public class ChunkPlayer implements CFWSerializeable {
 	public void inviteTo(ChunkTeam team, String by) {
 		this.invites.add(new TeamInvite(this, by, team));
 
-		if (isOnline()) {
 //			this.player.sendMessage(this.handler.getClaimer().getPrefix() + "Du wurdest in das Team " + team.getDisplayname() + " §7eingeladen! §8(§7/team accept/deny <Team>§8)");
 //			TextComponent accept = new TextComponent(this.handler.getClaimer().getPrefix() + "§aAnnehmen");
 //			accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team accept " + team.getName()));
 //			TextComponent deny = new TextComponent(this.handler.getClaimer().getPrefix() + "§cAblehnen");
 //			deny.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team deny " + team.getName()));
 //			this.player.sendMessage(accept + "\n" + deny);
-		}
-	}
+    }
 
 	public void removeInvite(TeamInvite invite) {
 		this.invites.remove(invite);
@@ -127,11 +122,8 @@ public class ChunkPlayer implements CFWSerializeable {
 	public void setPlayer(Player player) {
 		this.player = player;
 
-		if (player == null) {
-			this.networkManager = null;
-		} else {
-			this.name = this.player.getName();
-			this.networkManager = new NetworkManager(this.player);
+		if (player != null) {
+            this.name = this.player.getName();
 		}
 	}
 
@@ -148,10 +140,6 @@ public class ChunkPlayer implements CFWSerializeable {
 
 	public Player getPlayer() {
 		return player;
-	}
-
-	public NetworkManager getNetworkManager() {
-		return networkManager;
 	}
 
 	public ChunkEntityHandler getHandler() {

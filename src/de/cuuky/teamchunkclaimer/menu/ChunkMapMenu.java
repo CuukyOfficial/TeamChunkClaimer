@@ -5,23 +5,22 @@ import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
 import de.cuuky.cfw.inventory.ItemInfo;
 import de.cuuky.cfw.inventory.ItemInserter;
 import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.utils.DirectionFace;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ClaimChunk;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class ChunkMapMenu extends ChunkClaimerMenu {
 
-    private ChunkClaimer claimer;
-    private ChunkPlayer player;
-    private DirectionFace face;
+    private final ChunkClaimer claimer;
+    private final ChunkPlayer player;
+    private final DirectionFace face;
     private Chunk center;
 
     private int chunkJumpHorizontal = 1, chunkJumpVertical = 1;
@@ -39,7 +38,7 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
     }
 
     private void addNav(int minusIndex, String name, boolean hor, boolean left) {
-        this.addItem(this.getSize() - minusIndex, new ItemBuilder().displayname(name)
+        this.addItem(this.getSize() - minusIndex, new BuildItem().displayName(name)
                 .itemstack(Materials.ARROW.parseItem()).build(), e -> {
             int[] xz = getDirectionChange(hor, left);
             center = center.getWorld().getChunkAt(center.getX() + (xz[0] * chunkJumpVertical),
@@ -68,23 +67,23 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
     }
 
     @Override
-    protected ItemInserter getInserter() {
+    public ItemInserter getInserter() {
         return new DirectInserter();
     }
 
     @Override
-    protected ItemStack getFillerStack() {
+    public ItemStack getFillerStack() {
         return null;
     }
 
     @Override
-    protected ItemInfo getBackInfo() {
+    public ItemInfo getBackInfo() {
         ItemInfo closeInfo = super.getCloseInfo();
         return super.getPrevious() != null ? super.getBackInfo().setIndex(closeInfo.getIndex()) : null;
     }
 
     @Override
-    protected ItemInfo getCloseInfo() {
+    public ItemInfo getCloseInfo() {
         return super.getPrevious() != null ? null : super.getCloseInfo();
     }
 
@@ -100,7 +99,7 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
 
     @Override
     public void refreshContent() {
-        double height = (this.getUsableSize() / 9) / 2, width = 4;
+        double height = (this.getUsableSize() / 9f) / 2, width = 4;
 
         for (double y = height * -1; y <= height; y++) {
             for (double x = width * -1; x <= width; x++) {
@@ -110,8 +109,8 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
 
                 Chunk worldChunk = center.getWorld().getChunkAt(chunkX, chunkZ);
                 ClaimChunk chunk = this.claimer.getEntityHandler().getChunk(worldChunk);
-                ItemBuilder builder = new ItemBuilder().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem())
-                        .displayname("§fUnclaimed")
+                BuildItem builder = new BuildItem().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem())
+                        .displayName("§fUnclaimed")
                         .lore("§7Location:", "§7X§8: §5" + (locationX + 8), "§7Z§8: §5" + (locationZ + 8), "§7Linksklick = claim/Chunk info", "§7Rechtsklick = unclaim/Team info", (worldChunk.equals(getPlayer().getLocation().getChunk()) ? "§aDa bist du!" : ""));
 
                 if (chunk != null) {
@@ -120,7 +119,7 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
                     else
                         builder.itemstack(Materials.GREEN_STAINED_GLASS_PANE.parseItem());
 
-                    builder.displayname(chunk.getTeam().getDisplayname());
+                    builder.displayName(chunk.getTeam().getDisplayname());
                 }
 
                 double invX = x + width;
@@ -150,29 +149,29 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
                 this.addNav(8, "§cUnten", false, false);
                 this.addNav(9, "§aOben", false, true);
 
-                addItem(this.getSize() - 4, new ItemBuilder().displayname("§5Zentrieren").
+                addItem(this.getSize() - 4, new BuildItem().displayName("§5Zentrieren").
                                 itemstack(Materials.DIAMOND.parseItem()).build(),
                         event -> center = getPlayer().getLocation().getChunk());
 
-                addItem(this.getSize() - 7, new ItemBuilder()
-                                .displayname("§7Vertikale Chunks pro §aKlick§7: §a" + this.chunkJumpVertical)
+                addItem(this.getSize() - 7, new BuildItem()
+                                .displayName("§7Vertikale Chunks pro §aKlick§7: §a" + this.chunkJumpVertical)
                                 .lore("§aLinks §7= hoch", "§cRechts §7= runter")
                                 .itemstack(Materials.COAL.parseItem()).build(),
                         event -> chunkJumpVertical += event.isLeftClick() ? 1 : -1
                 );
 
-                addItem(this.getSize() - 3, new ItemBuilder().displayname("§7Horizontale Chunks pro §aKlick§7: §a" + this.chunkJumpHorizontal).
+                addItem(this.getSize() - 3, new BuildItem().displayName("§7Horizontale Chunks pro §aKlick§7: §a" + this.chunkJumpHorizontal).
                                 lore("§aLinks §7= hoch", "§cRechts §7= runter").itemstack(Materials.COAL.parseItem()).build(),
                         (event) -> chunkJumpHorizontal += event.isLeftClick() ? 1 : -1);
 
-                addItem(this.getSize() - 6, new ItemBuilder().displayname("§2Springe zu...").itemstack(Materials.MAP.parseItem()).build(), (event) -> {
+                addItem(this.getSize() - 6, new BuildItem().displayName("§2Springe zu...").itemstack(Materials.MAP.parseItem()).build(), (event) -> {
                     this.close();
                     claimer.getCuukyFrameWork().getHookManager().registerHook(new ChatHook(player.getPlayer(), claimer.getPrefix() + "Koordinaten eingeben: §8(§7z.B.: §8'§f100 200§8')", new ChatHookHandler() {
                         @Override
                         public boolean onChat(PlayerChatEvent event) {
                             try {
                                 String[] args = event.getMessage().split(" ");
-                                int x = Integer.valueOf(args[0]), z = Integer.valueOf(args[1]);
+                                int x = Integer.parseInt(args[0]), z = Integer.parseInt(args[1]);
                                 center = center.getWorld().getChunkAt(x / 16, z / 16);
                             } catch (Exception e) {
                                 player.getPlayer().sendMessage(claimer.getPrefix() + "X und Z sind keine Zahlen!");

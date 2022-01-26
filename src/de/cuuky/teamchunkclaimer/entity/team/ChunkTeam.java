@@ -1,14 +1,6 @@
 package de.cuuky.teamchunkclaimer.entity.team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeField;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
@@ -22,10 +14,18 @@ import de.cuuky.teamchunkclaimer.menu.team.TeamMemberMenu;
 import de.cuuky.teamchunkclaimer.menu.team.options.FlagOptionsMenu;
 import de.cuuky.teamchunkclaimer.menu.team.options.GeneralOptionsMenu;
 import de.cuuky.teamchunkclaimer.utils.ChunkUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChunkTeam implements CFWSerializeable {
 
-    private ChunkEntityHandler handler;
+    private final ChunkEntityHandler handler;
 
     @CFWSerializeField(path = "teamId")
     private int teamId;
@@ -56,10 +56,10 @@ public class ChunkTeam implements CFWSerializeable {
     public ChunkTeam(ChunkEntityHandler handler) {
         this.handler = handler;
 
-        this.claimedChunks = new ArrayList<ClaimChunk>();
-        this.memberIds = new HashMap<String, TeamMemberType>();
-        this.members = new HashMap<ChunkPlayer, TeamMemberType>();
-        this.flags = new HashMap<ChunkFlag, Boolean>();
+        this.claimedChunks = new ArrayList<>();
+        this.memberIds = new HashMap<>();
+        this.members = new HashMap<>();
+        this.flags = new HashMap<>();
     }
 
     public ChunkTeam(ChunkEntityHandler handler, String name) {
@@ -78,7 +78,7 @@ public class ChunkTeam implements CFWSerializeable {
     }
 
     private ArrayList<ClaimChunk> getAttached(ArrayList<ClaimChunk> found, ClaimChunk chunk) {
-        ArrayList<ClaimChunk> attached = new ArrayList<ClaimChunk>();
+        ArrayList<ClaimChunk> attached = new ArrayList<>();
 
         for (ClaimChunk chunks : chunk.getClaimedChunksAround()) {
             if (found.contains(chunks))
@@ -97,12 +97,11 @@ public class ChunkTeam implements CFWSerializeable {
             return;
 
         for (int i = this.claimedChunks.size() - allowed; i >= 0; i--) {
-            ArrayList<ClaimChunk> chunks = new ArrayList<ClaimChunk>(this.claimedChunks);
+            ArrayList<ClaimChunk> chunks = new ArrayList<>(this.claimedChunks);
             // GET CHUNKS OF PLAYER WHO CLAIMED
             for (ClaimChunk chunk : chunks)
                 if (chunk.getClaimedBy().equals(removed.getUuid())) {
                     removeChunk(chunk);
-                    continue;
                 }
 
             removeChunk(this.claimedChunks.get(this.claimedChunks.size() - 1));
@@ -166,7 +165,7 @@ public class ChunkTeam implements CFWSerializeable {
     }
 
     public ArrayList<ChunkPlayer> getMember(TeamMemberType type) {
-        ArrayList<ChunkPlayer> found = new ArrayList<ChunkPlayer>();
+        ArrayList<ChunkPlayer> found = new ArrayList<>();
         for (ChunkPlayer player : this.members.keySet())
             if (this.members.get(player) == type)
                 found.add(player);
@@ -175,7 +174,7 @@ public class ChunkTeam implements CFWSerializeable {
     }
 
     public void addChunk(Chunk chunk, ChunkPlayer claimedBy) {
-        ClaimChunk newChunk = null;
+        ClaimChunk newChunk;
         this.claimedChunks.add(newChunk = new ClaimChunk(this, chunk, claimedBy));
         this.sendMessage(this.handler.getClaimer().getPrefix() + "Ein Chunk bei " + "X: " + newChunk.getLocationX() + ", Z: " + newChunk.getLocationZ() + " in " + newChunk.getWorld() + " wurde für dein Team von " + claimedBy.getName() + " §7geclaimt!");
 
@@ -197,7 +196,7 @@ public class ChunkTeam implements CFWSerializeable {
 
     public int getChunkRegions() {
         int regions = 0;
-        ArrayList<ClaimChunk> found = new ArrayList<ClaimChunk>();
+        ArrayList<ClaimChunk> found = new ArrayList<>();
         for (ClaimChunk chunk : this.claimedChunks) {
             if (found.contains(chunk))
                 continue;
@@ -221,7 +220,8 @@ public class ChunkTeam implements CFWSerializeable {
             break;
         }
 
-        return extraRegion ? getChunkRegions() + 1 <= this.handler.getClaimer().getConfiguration().getMaxChunkGroups() : true;
+        return !extraRegion ||
+            getChunkRegions() + 1 <= this.handler.getClaimer().getConfiguration().getMaxChunkGroups();
     }
 
     @Override
@@ -335,6 +335,12 @@ public class ChunkTeam implements CFWSerializeable {
 
     public String getColor() {
         return color == null ? "§f" : ChatColor.translateAlternateColorCodes('&', color);
+    }
+
+    public List<ClaimChunk> getClaimedChunksReverse() {
+        List<ClaimChunk> chunks = new ArrayList<>(this.claimedChunks);
+        Collections.reverse(chunks);
+        return chunks;
     }
 
     public List<ClaimChunk> getClaimedChunks() {

@@ -7,6 +7,7 @@ import de.cuuky.cfw.inventory.ItemInserter;
 import de.cuuky.cfw.inventory.inserter.DirectInserter;
 import de.cuuky.cfw.utils.DirectionFace;
 import de.cuuky.cfw.utils.item.BuildItem;
+import de.cuuky.cfw.utils.item.BuildSkull;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.ChunkClaimer;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
@@ -101,7 +102,7 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
     public void refreshContent() {
         double height = (this.getUsableSize() / 9f) / 2, width = 4;
 
-        for (double y = height * -1; y <= height; y++) {
+        for (double y = height * -1; y <= height - 1; y++) {
             for (double x = width * -1; x <= width; x++) {
                 double[] coords = face.modifyValues(x, y);
                 int chunkX = (int) (center.getX() + coords[0]), locationX = chunkX * 16;
@@ -109,18 +110,22 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
 
                 Chunk worldChunk = center.getWorld().getChunkAt(chunkX, chunkZ);
                 ClaimChunk chunk = this.claimer.getEntityHandler().getChunk(worldChunk);
-                BuildItem builder = new BuildItem().itemstack(Materials.WHITE_STAINED_GLASS_PANE.parseItem())
+                ItemStack item = Materials.GREEN_STAINED_GLASS_PANE.parseItem();
+                BuildItem builder = new BuildItem().itemstack(item)
                         .displayName("§fUnclaimed")
-                        .lore("§7Location:", "§7X§8: §5" + (locationX + 8), "§7Z§8: §5" + (locationZ + 8), "§7Linksklick = claim/Chunk info", "§7Rechtsklick = unclaim/Team info", (worldChunk.equals(getPlayer().getLocation().getChunk()) ? "§aDa bist du!" : ""));
+                        .lore("§7Location:", "§7X§8: §2" + (locationX + 8), "§7Z§8: §2" + (locationZ + 8), "§7Linksklick: §aClaim", "§7Shift-Linksklick: §aInfo", "§7Rechtsklick: §aUnclaim", "§7Shift-Rechtsklick: §aTeam Info", (worldChunk.equals(getPlayer().getLocation().getChunk()) ? "§cDa bist du!" : ""));
 
                 if (chunk != null) {
                     if (player.getTeam() == null || !player.getTeam().equals(chunk.getTeam()))
                         builder.itemstack(Materials.RED_STAINED_GLASS_PANE.parseItem());
                     else
-                        builder.itemstack(Materials.GREEN_STAINED_GLASS_PANE.parseItem());
+                        builder.itemstack(Materials.CYAN_STAINED_GLASS_PANE.parseItem());
 
                     builder.displayName(chunk.getTeam().getDisplayname());
                 }
+
+                if (worldChunk.equals(getPlayer().getLocation().getChunk()))
+                    builder.itemstack(new BuildSkull().player(getPlayer().getName()).build());
 
                 double invX = x + width;
                 double invY = y + height;
@@ -146,13 +151,13 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
 
                 this.addNav(1, "§cRechts", true, true);
                 this.addNav(2, "§aLinks", true, false);
-                this.addNav(8, "§cUnten", false, false);
-                this.addNav(9, "§aOben", false, true);
+                this.addNav(8, "§cRunter", false, true);
+                this.addNav(9, "§aHoch", false, false);
 
-                addItem(this.getSize() - 4, new BuildItem().displayName("§5Zentrieren").
-                                itemstack(Materials.DIAMOND.parseItem()).build(),
+                addItem(this.getSize() - 4, new BuildItem().displayName("§2Zentrieren").
+                                itemstack(Materials.COMPASS.parseItem()).build(),
                         event -> center = getPlayer().getLocation().getChunk());
-
+/*
                 addItem(this.getSize() - 7, new BuildItem()
                                 .displayName("§7Vertikale Chunks pro §aKlick§7: §a" + this.chunkJumpVertical)
                                 .lore("§aLinks §7= hoch", "§cRechts §7= runter")
@@ -163,8 +168,8 @@ public class ChunkMapMenu extends ChunkClaimerMenu {
                 addItem(this.getSize() - 3, new BuildItem().displayName("§7Horizontale Chunks pro §aKlick§7: §a" + this.chunkJumpHorizontal).
                                 lore("§aLinks §7= hoch", "§cRechts §7= runter").itemstack(Materials.COAL.parseItem()).build(),
                         (event) -> chunkJumpHorizontal += event.isLeftClick() ? 1 : -1);
-
-                addItem(this.getSize() - 6, new BuildItem().displayName("§2Springe zu...").itemstack(Materials.MAP.parseItem()).build(), (event) -> {
+*/
+                addItem(this.getSize() - 6, new BuildItem().displayName("§2Springe zu...").itemstack(Materials.CLOCK.parseItem()).build(), (event) -> {
                     this.close();
                     claimer.getCuukyFrameWork().getHookManager().registerHook(new ChatHook(player.getPlayer(), claimer.getPrefix() + "Koordinaten eingeben: §8(§7z.B.: §8'§f100 200§8')", new ChatHookHandler() {
                         @Override

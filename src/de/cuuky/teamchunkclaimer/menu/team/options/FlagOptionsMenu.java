@@ -1,8 +1,6 @@
 package de.cuuky.teamchunkclaimer.menu.team.options;
 
-import de.cuuky.cfw.inventory.ItemInserter;
-import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.chunks.ChunkFlag;
 import de.cuuky.teamchunkclaimer.menu.ChunkClaimerMenu;
@@ -31,7 +29,7 @@ public class FlagOptionsMenu extends ChunkClaimerMenu {
     public void refreshContent() {
         int start = 11;
         for (ChunkFlag flag : ChunkFlag.values()) {
-            addItem(start, new ItemBuilder().displayname((player.getTeam().getFlag(flag) ? "§2" : "§c") + flag.getName())
+            addItem(start, new BuildItem().displayName((player.getTeam().getFlag(flag) ? "§2" : "§c") + flag.getName())
                             .lore("§aBeschreibung§8: §7" + flag.getDescription(), "§7Aktiviert§8: " + (player.getTeam().getFlag(flag) ? "§2Ja" : "§cNein"))
                             .itemstack(flag.getMaterial().parseItem()).build(),
                     e -> {

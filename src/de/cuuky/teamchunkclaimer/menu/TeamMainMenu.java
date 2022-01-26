@@ -1,7 +1,7 @@
 package de.cuuky.teamchunkclaimer.menu;
 
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
+import de.cuuky.cfw.utils.item.BuildSkull;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.teamchunkclaimer.entity.player.ChunkPlayer;
 import de.cuuky.teamchunkclaimer.entity.team.TeamMemberType;
@@ -26,17 +26,17 @@ public class TeamMainMenu extends ChunkClaimerMenu {
 
     @Override
     public void refreshContent() {
-        this.addItem(10, new ItemBuilder().playername(player.getTeam().getOwner().getName()).displayname("§5Mitglieder").buildSkull(),
+        this.addItem(10, new BuildSkull().player(player.getTeam().getOwner().getName()).displayName("§5Mitglieder").build(),
                 e -> this.openNext(new TeamMemberMenu(player)));
 
         if (player.getTeam().getMemberType(player) != TeamMemberType.MEMBER)
-            this.addItem(12, new ItemBuilder().itemstack(Materials.COMMAND_BLOCK.parseItem()).displayname("§cEinstellungen").build(),
+            this.addItem(12, new BuildItem().itemstack(Materials.COMMAND_BLOCK.parseItem()).displayName("§cEinstellungen").build(),
                     e -> this.openNext(new TeamOptionsMenu(player)));
 
-        this.addItem(14, new ItemBuilder().itemstack(Materials.GRASS_BLOCK.parseItem()).displayname("§a" + player.getTeam().getClaimedChunks().size() + "§7/" + (player.getTeam().hasMaximumChunksReached() ? "§c" : "§a") + player.getTeam().getAllowedChunkAmount() + " §aChunks §7geclaimt").build(),
+        this.addItem(14, new BuildItem().itemstack(Materials.GRASS_BLOCK.parseItem()).displayName("§a" + player.getTeam().getClaimedChunks().size() + "§7/" + (player.getTeam().hasMaximumChunksReached() ? "§c" : "§a") + player.getTeam().getAllowedChunkAmount() + " §aChunks §7geclaimt").build(),
                 e -> this.openNext(new ChunkListMenu(player)));
 
-        this.addItem(16, new ItemBuilder().itemstack(Materials.MAP.parseItem()).displayname("§2Karte öffnen").build(),
+        this.addItem(16, new BuildItem().itemstack(Materials.MAP.parseItem()).displayName("§2Karte öffnen").build(),
                 e -> this.openNext(new ChunkMapMenu(player.getHandler().getClaimer(), player.getPlayer())));
     }
 

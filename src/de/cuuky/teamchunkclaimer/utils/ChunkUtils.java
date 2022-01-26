@@ -1,9 +1,13 @@
 package de.cuuky.teamchunkclaimer.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
 
 public class ChunkUtils {
 
@@ -16,4 +20,5 @@ public class ChunkUtils {
 		chunks.add(chunk.getWorld().getChunkAt(chunkX, chunkZ - 1));
 		return chunks;
 	}
+
 }

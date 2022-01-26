@@ -46,7 +46,7 @@ configurations {
 dependencies {
     this.addModularCompile('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT', 'spigot', false)
     
-    this.addModularCompile('com.github.CuukyOfficial:CFW:master-SNAPSHOT', 'CFW - Cuuky FrameWork', true)
+    this.addModularInternal('com.github.CuukyOfficial:CFW:master-SNAPSHOT', 'CFW - Cuuky FrameWork', true)
 
     compileOnly configurations.internalLibs
 }

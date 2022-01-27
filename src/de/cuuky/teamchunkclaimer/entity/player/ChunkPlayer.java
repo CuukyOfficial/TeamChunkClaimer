@@ -5,6 +5,7 @@ import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.teamchunkclaimer.entity.ChunkEntityHandler;
 import de.cuuky.teamchunkclaimer.entity.player.invites.TeamInvite;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
@@ -144,5 +145,9 @@ public class ChunkPlayer implements CFWSerializeable {
 
 	public ChunkEntityHandler getHandler() {
 		return handler;
+	}
+
+	public void sendMessage(String message) {
+		this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 	}
 }

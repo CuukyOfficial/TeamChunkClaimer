@@ -8,6 +8,7 @@ import de.cuuky.teamchunkclaimer.entity.player.invites.TeamInvite;
 import de.cuuky.teamchunkclaimer.entity.team.ChunkTeam;
 import de.cuuky.teamchunkclaimer.entity.team.TeamMemberType;
 import de.cuuky.teamchunkclaimer.menu.TeamMainMenu;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -168,17 +169,14 @@ public class TeamCommand implements CommandExecutor {
                 return false;
             }
 
-            if (args[1].length() < 2 || !args[1].startsWith("&")) {
-                sender.sendMessage(claimer.getPrefix() + "Bitte gib eine gültige Farbe ein.");
-                VersionUtils.getVersionAdapter()
-                    .sendLinkedMessage(player.getPlayer(), claimer.getPrefix() + "Klicke hier für eine Liste.",
-                        "https://static.planetminecraft.com/files/resource_media/screenshot/1444/minecraftcolourcodes8294254_lrg.jpg");
+            if (getColorFromInput(args[1]) == null) {
+                sender.sendMessage(claimer.getPrefix() + "Bitte gib eine gültige Farbe ein (zB 'RED').");
                 return false;
             }
 
-            player.getTeam().setColor(args[1]);
+            player.getTeam().setColor(getColorFromInput(args[1]));
             sender.sendMessage(claimer.getPrefix() + "Farbcode erfolgreich auf " + player.getTeam().getColor() +
-                player.getTeam().getColor().replace('§', '&') + " §7gesetzt!");
+                ChatColor.getByChar(player.getTeam().getColor().split("(?!^)")[1]).name() + " §7gesetzt!");
             return true;
         } else if (args[0].equalsIgnoreCase("rename")) {
             if (args.length < 2) {
@@ -319,5 +317,15 @@ public class TeamCommand implements CommandExecutor {
 
         sender.sendMessage(claimer.getPrefix() + "Dieser Befehl existiert nicht (/team).");
         return false;
+    }
+
+    // Returns the color string by chatcolor name or null if invalid
+    public String getColorFromInput(String input) {
+        input = input.toUpperCase();
+        for(ChatColor color : ChatColor.values()) {
+            if (color.name().equals(input))
+                return "&" + ChatColor.valueOf(input).getChar();
+        }
+        return null;
     }
 }

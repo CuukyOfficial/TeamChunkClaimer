@@ -17,7 +17,7 @@ public class FlagOptionsMenu extends ChunkClaimerMenu {
 
     @Override
     public String getTitle() {
-        return "§7Flags";
+        return "§aFlags";
     }
 
     @Override

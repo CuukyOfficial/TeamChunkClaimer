@@ -7,13 +7,13 @@ import de.cuuky.cfw.version.types.Materials;
 public enum ChunkFlag implements CFWSerializeable {
 
 	@CFWSerializeField(enumValue = "BUILD")
-	BUILD("Build", Materials.CHEST, "Ob Nichtteammitglieder auf deinem Grundstück bauen können"),
+	BUILD("Build", Materials.CHEST, "Blöcke abbauen/platzieren"),
 
 	@CFWSerializeField(enumValue = "PVP")
-	PVP("PvP", Materials.IRON_SWORD, "Ob auf dem Grundstück PvP aktiviert sein soll"),
+	PVP("PvP", Materials.IRON_SWORD, "PvP zwischen Spielern"),
 
 	@CFWSerializeField(enumValue = "USE")
-	USE("Use", Materials.STONE_SHOVEL, "Ob Nichtteammitglieder Kisten, Öfen etc. nutzen dürfen");
+	USE("Use", Materials.STONE_SHOVEL, "Kisten/Öfen/... nutzen");
 
 	private String name, description;
 	private Materials material;

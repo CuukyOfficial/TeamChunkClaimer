@@ -21,7 +21,7 @@ import de.cuuky.teamchunkclaimer.utils.WorldGuardChecker;
 
 public class ChunkCommand implements CommandExecutor {
 
-	private ChunkClaimer claimer;
+	private final ChunkClaimer claimer;
 
 	public ChunkCommand(ChunkClaimer claimer) {
 		this.claimer = claimer;
@@ -50,7 +50,7 @@ public class ChunkCommand implements CommandExecutor {
 		Chunk worldChunk = player.getPlayer().getLocation().getChunk();
 		if (args.length > 1) {
 			try {
-				int x = Integer.valueOf(args[1]), z = Integer.valueOf(args[2]);
+				int x = Integer.parseInt(args[1]), z = Integer.parseInt(args[2]);
 				worldChunk = player.getPlayer().getWorld().getChunkAt(x / 16, z / 16);
 			} catch (Exception e) {
 				sender.sendMessage(claimer.getPrefix() + "X und Z sind keine Zahlen! /chunk");
@@ -141,6 +141,11 @@ public class ChunkCommand implements CommandExecutor {
 			sender.sendMessage(claimer.getPrefix() + "Du hast den Chunk erfolgreich entclaimt!");
 			return true;
 		} else if (args[0].equalsIgnoreCase("list")) {
+            if (player.getTeam() == null) {
+                sender.sendMessage(claimer.getPrefix() + "Du bist in keinem Team!");
+                return false;
+            }
+
 			new ChunkListMenu(player);
 			return true;
 		}
@@ -163,7 +168,7 @@ public class ChunkCommand implements CommandExecutor {
 				return false;
 			}
 
-			ChunkFlag flag = null;
+			ChunkFlag flag;
 			try {
 				flag = ChunkFlag.valueOf(args[1].toUpperCase());
 			} catch (IllegalArgumentException e) {
@@ -171,16 +176,16 @@ public class ChunkCommand implements CommandExecutor {
 				return false;
 			}
 
-			boolean enabled = false;
+			boolean enabled;
 			try {
-				enabled = Boolean.valueOf(args[2]);
+				enabled = Boolean.parseBoolean(args[2]);
 			} catch (Exception e) {
 				sender.sendMessage(claimer.getPrefix() + "/team flag <pvp/use/build> <true/false>");
 				return false;
 			}
 
 			if (player.getTeam().getFlag(flag) == enabled) {
-				sender.sendMessage(claimer.getPrefix() + flag.toString() + " ist bereits auf " + enabled + "!");
+				sender.sendMessage(claimer.getPrefix() + flag + " ist bereits auf " + enabled + "!");
 				return false;
 			}
 

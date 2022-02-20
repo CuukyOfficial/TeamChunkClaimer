@@ -25,33 +25,22 @@ public class TeamMemberMenu extends AdvancedListInventory<ChunkPlayer> {
 	}
 
 	@Override
-	public int getSize() {
-		return 54;
-	}
-
-	@Override
-    public ItemStack getFillerStack() {
-		return null;
-	}
-
-	@Override
 	protected ItemStack getItemStack(ChunkPlayer member) {
 		return new BuildSkull().player(member.getName()).displayName(member.getTeam().getMemberType(member) == TeamMemberType.MEMBER ? "§7" : "§c" + member.getName())
-				.lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString(), ((member.getTeam().getMemberType(member) == TeamMemberType.MEMBER && player.getTeam().getMemberType(player) == TeamMemberType.OWNER) ? "§7Klicke zum Befördern." : ""))
+				.lore("§7Rank§8: " + claimer.getColorCode() + member.getTeam().getMemberType(member).toString(),
+                    ((member.getTeam().getMemberType(member) == TeamMemberType.MEMBER && player.getTeam().getMemberType(player) == TeamMemberType.OWNER)
+                        ? "§7Klicke zum Befördern." : ""))
 				.build();
 	}
 
 	@Override
 	protected ItemClick getClick(ChunkPlayer chunkPlayer) {
-		return new ItemClick() {
-			@Override
-			public void onItemClick(InventoryClickEvent inventoryClickEvent) {
-				String displayName = inventoryClickEvent.getCurrentItem().getItemMeta().getDisplayName();
-				if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
-					claimer.getPlugin().getServer().dispatchCommand(player.getPlayer(), "team promote " + displayName.substring(2));
-				}
-			}
-		};
+		return inventoryClickEvent -> {
+            String displayName = inventoryClickEvent.getCurrentItem().getItemMeta().getDisplayName();
+            if (player.getTeam().getMemberType(player) == TeamMemberType.OWNER) {
+                claimer.getPlugin().getServer().dispatchCommand(player.getPlayer(), "team promote " + displayName.substring(2));
+            }
+        };
 	}
 
 	@Override

@@ -26,16 +26,6 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
     }
 
     @Override
-    public ItemStack getFillerStack() {
-        return null;
-    }
-
-    @Override
-    protected boolean copyList() {
-        return false;
-    }
-
-    @Override
     protected ItemStack getItemStack(ClaimChunk chunk) {
         return new BuildItem().displayName("§7X§8: " + claimer.getColorCode() + chunk.getLocationX() + "§8, §7Z§8: " + claimer.getColorCode() + chunk.getLocationZ()).itemstack(new ItemStack(Materials.GRASS_BLOCK.parseItem())).lore("§7Claimer§8: " + claimer.getColorCode() + (chunk.getClaimedByPlayer() == null ? chunk.getClaimedBy() : chunk.getClaimedByPlayer().getName()), "§7Erstellungsdatum§8: " + claimer.getColorCode() + new SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(chunk.getClaimedAt()), "", "§aLinksklick§7, um auf der Karte anzuzeigen", "§cRechtsklick§7, um zu entclaimen").build();
     }
@@ -50,11 +40,6 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
                 this.updateList(player.getTeam().getClaimedChunksReverse());
             }
         };
-    }
-
-    @Override
-    public int getSize() {
-        return 54;
     }
 
     @Override

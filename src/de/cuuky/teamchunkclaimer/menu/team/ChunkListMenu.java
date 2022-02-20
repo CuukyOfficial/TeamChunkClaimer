@@ -45,8 +45,10 @@ public class ChunkListMenu extends AdvancedListInventory<ClaimChunk> {
         return (event) -> {
             if (event.isLeftClick())
                 this.openNext(new ChunkMapMenu(claimer, player.getPlayer(), chunk.getChunk()));
-            else
+            else {
                 player.getTeam().removeChunk(chunk);
+                this.updateList(player.getTeam().getClaimedChunksReverse());
+            }
         };
     }
 
